@@ -4,8 +4,15 @@ Functions
 -----------------------
 parse_ds()
     Parse a 2D data set from a file.
+
+Classes
+-----------------------
+ParsingError
+    Subclassed exception for errors in dataset parsing.
 """
 
+
+import os
 
 import numpy as np
 
@@ -13,6 +20,10 @@ import numpy as np
 # MAX AND MIN NUM OF BINS TO CONSIDER WHEN BINNING
 MAXBINS = 1024
 MINBINS = 64
+
+
+class ParsingError(Exception):
+    """Subclassed exception for errors in dataset parsing."""
 
 
 def parse_df(
@@ -37,13 +48,17 @@ def parse_df(
     Returns
     -----------------------
     np.array
-        A 2D array with the parsed dataset
+        A 2D array (may be 1-column) with the parsed dataset
 
     Raises
     -----------------------
-    FIXME
+    - ParsingError if file not found
     """
-    # FIXME exceptions
+    # FIXME exceptions (fields not found,
+    # field number too large, ...)
+
+    if not os.path.isfile(file):
+        raise ParsingError("file does not exist")
 
     if not colnum_test:
         # only take selected columns, others ignored
@@ -55,8 +70,6 @@ def parse_df(
             dtype=np.float64,
             usecols=fields,
         )
-        # FIXME exception
-        # FIXME field not found
     else:
         # get all columns
         dataset = np.loadtxt(
@@ -65,8 +78,5 @@ def parse_df(
 
         if fields is not None:
             dataset = dataset[:, fields]
-
-    if len(dataset.shape) == 1:
-        dataset = dataset.reshape(dataset.shape[0], 1)
 
     return dataset
