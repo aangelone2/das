@@ -200,25 +200,15 @@ def get_stats(ds: np.array) -> dict[str, float]:
           - s (standard deviation of the mean)
           - ds (standard deviation of s)
           - sum (sum)
-
-    Raises
-    -----------------------
-    - TailoringError if insufficient rows (< MINBINS)
     """
     res = []
     N = ds.shape[0]
 
-    if N < MINBINS:
-        raise TailoringError("insufficient number of rows")
-
-    for col in range(ds.shape[1]):
-        data = ds[:, col]
-
-        m = data.mean()
-        s = m.std(ddof=1) / math.sqrt(N)
+    for col in ds.T:
+        m = col.mean()
+        s = col.std(ddof=1) / math.sqrt(N)
         ds = s / math.sqrt(2.0 * (N - 1))
-
-        sm = data.sum()
+        sm = col.sum()
 
         res.append({"m": m, "s": s, "ds": ds, "sum": sm})
 
