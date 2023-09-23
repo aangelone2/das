@@ -7,7 +7,9 @@ parse_ds()
 drop_rows()
     Remove rows from 2D array.
 rebin()
-    Rebins a 2D array with perfect shape assumed.
+    Rebin a 2D array with perfect shape assumed.
+get_stats()
+    Compute statistical observables for dataset.
 
 Classes
 -----------------------
@@ -37,7 +39,7 @@ class TailoringError(Exception):
     """Subclassed exception for errors in dataset tailoring."""
 
 
-def parse_df(
+def parse_ds(
     file: str,
     fields: list[int] | None = None,
     colnum_test: bool = False,
@@ -102,7 +104,7 @@ def drop_rows(
     Parameters
     -----------------------
     ds : np.array
-        The array to tailor
+        The dataset to tailor
     perc : float, default = 0.0
         Percentage of rows to skip
     power2 : bool, default = False
@@ -134,12 +136,12 @@ def drop_rows(
 
 
 def rebin(ds: np.array, nbins: int) -> np.array:
-    """Rebins a 2D array with perfect shape assumed.
+    """Rebin a 2D array with perfect shape assumed.
 
     Parameters
     -----------------------
     ds : np.array
-        The array to rebin
+        The dataset to rebin
     nbins : int
         Number of requested bins
 
@@ -167,3 +169,44 @@ def rebin(ds: np.array, nbins: int) -> np.array:
             axis=0
         )
     return ds2
+
+
+def get_stats(ds: np.array) -> dict[str, float]:
+    """Compute statistical observables for dataset.
+
+    Parameters
+    -----------------------
+    ds : np.array
+        The dataset to analyze
+
+    Returns
+    -----------------------
+    dict[str, float]
+        Dictionary with stats, keys:
+        - m (average)
+        - s (standard deviation of the mean)
+        - ds (standard deviation of s)
+        - sum (sum)
+
+    Raises
+    -----------------------
+    - TailoringError if insufficient rows (< MINBINS)
+    """
+    res = []
+    N = ds.shape[0]
+
+    if N < MINBINS:
+        raise TailoringError("insufficient number of rows")
+
+    for col in range(ds.shape[1]):
+        data = ds[:, col]
+
+        m = data.mean()
+        s = m.std(ddof=1) / math.sqrt(N)
+        ds = s / math.sqrt(2.0 * (N - 1))
+
+        sm = data.sum()
+
+        res.append({"m": m, "s": s, "ds": ds, "sum": sm})
+
+    return res
