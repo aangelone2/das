@@ -27,7 +27,7 @@ def test_empty_lines():
 def test_empty_column():
     """Testing parsing of file with missing values."""
 
-    # missing value in last row, column 2
+    # missing value row 3, column 2
 
     # parsing all columns, testing colnum
     with pytest.raises(ParsingError) as err:
@@ -36,7 +36,10 @@ def test_empty_column():
             None,
             colnum_test=True,
         )
-    assert str(err.value) == "missing field"
+    assert (
+        str(err.value)
+        == "the number of columns changed from 4 to 3 at row 3; use `usecols` to select a subset and avoid this error"
+    )
 
     # only parsing cols [0,1], testing colnum
     with pytest.raises(ParsingError) as err:
@@ -45,16 +48,22 @@ def test_empty_column():
             [0, 1],
             colnum_test=True,
         )
-    assert str(err.value) == "missing field"
+    assert (
+        str(err.value)
+        == "the number of columns changed from 4 to 3 at row 3; use `usecols` to select a subset and avoid this error"
+    )
 
-    # parsing columns [2,4], testing colnum
+    # parsing columns [1,3], testing colnum
     with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
-            [2, 4],
+            [1, 3],
             colnum_test=True,
         )
-    assert str(err.value) == "missing field"
+    assert (
+        str(err.value)
+        == "the number of columns changed from 4 to 3 at row 3; use `usecols` to select a subset and avoid this error"
+    )
 
     # parsing all columns, NOT testing colnum
     with pytest.raises(ParsingError) as err:
@@ -63,7 +72,10 @@ def test_empty_column():
             None,
             colnum_test=False,
         )
-    assert str(err.value) == "missing field"
+    assert (
+        str(err.value)
+        == "the number of columns changed from 4 to 3 at row 3; use `usecols` to select a subset and avoid this error"
+    )
 
     # only parsing cols [0,1], NOT testing colnum
     # should pass (missing column not within parsed span)
@@ -76,11 +88,14 @@ def test_empty_column():
         ds, np.array([[1, 2], [5, 6], [1, 2]])
     )
 
-    # parsing columns [2,4], NOT testing colnum
+    # parsing columns [1,3], NOT testing colnum
     with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
-            [2, 4],
+            [1, 3],
             colnum_test=False,
         )
-    assert str(err.value) == "missing field"
+    assert (
+        str(err.value)
+        == "invalid column index 3 at row 3 with 3 columns"
+    )

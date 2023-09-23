@@ -84,7 +84,7 @@ def parse_ds(
                 usecols=fields,
             )
         except ValueError as lower:
-            raise ParsingError("missing field") from lower
+            raise ParsingError(lower) from lower
     else:
         # get all columns
         try:
@@ -95,7 +95,7 @@ def parse_ds(
                 usecols=None,
             )
         except ValueError as lower:
-            raise ParsingError("missing field") from lower
+            raise ParsingError(lower) from lower
 
         if fields is not None:
             dataset = dataset[:, fields]
