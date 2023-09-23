@@ -97,7 +97,7 @@ def parse_ds(
 
 
 def drop_rows(
-    ds: np.array, perc: float = 0.0, power2: bool = False
+    ds: np.array, skip_perc: float = 0.0, power2: bool = False
 ) -> np.array:
     """Remove rows from 2D array.
 
@@ -105,7 +105,7 @@ def drop_rows(
     -----------------------
     ds : np.array
         The dataset to tailor
-    perc : float, default = 0.0
+    skip_perc : float, default = 0.0
         Percentage of rows to skip
     power2 : bool, default = False
         After `perc`, skips enough to leave the closest power
@@ -122,7 +122,7 @@ def drop_rows(
     """
     rows = ds.shape[0]
 
-    skip = int((perc / 100.0) * rows)
+    skip = int((skip_perc / 100.0) * rows)
     keep = rows - skip
 
     if power2:
@@ -181,12 +181,12 @@ def get_stats(ds: np.array) -> dict[str, float]:
 
     Returns
     -----------------------
-    dict[str, float]
-        Dictionary with stats, keys:
-        - m (average)
-        - s (standard deviation of the mean)
-        - ds (standard deviation of s)
-        - sum (sum)
+    list[dict[str, float]]
+        Dict of stats for each column, keys:
+          - m (average)
+          - s (standard deviation of the mean)
+          - ds (standard deviation of s)
+          - sum (sum)
 
     Raises
     -----------------------
