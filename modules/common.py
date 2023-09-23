@@ -46,8 +46,8 @@ def parse_ds(
 ) -> np.array:
     """Parse a 2D data set from a file.
 
-    Ignores blank lines, does not accept non-commented headers.
-    Raises error if empty column read.
+    - Empty and commented (#) lines are skipped
+    - Does not accept non-commented headers
 
     Parameters
     -----------------------
