@@ -168,7 +168,7 @@ def rebin(ds: np.array, nbins: int) -> np.array:
     - TailoringError if insufficient rows for binning
     - TailoringError if leftover rows after binning
     """
-    if ds.shape[0] > nbins:
+    if ds.shape[0] < nbins:
         raise TailoringError("insufficient rows for binning")
 
     if ds.shape[0] % nbins != 0:

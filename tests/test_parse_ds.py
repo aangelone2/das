@@ -12,7 +12,7 @@ def test_missing_file():
 
     with pytest.raises(ParsingError) as err:
         _ = parse_ds("tests/data/missing.dat", None, True)
-        assert err == "file does not exist"
+    assert str(err.value) == "file does not exist"
 
 
 def test_empty_lines():
