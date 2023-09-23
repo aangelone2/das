@@ -61,13 +61,14 @@ def parse_ds(
     Returns
     -----------------------
     np.array
-        A 2D array (may be 1-column) with the parsed dataset
+        A 2D array (1D if only 1 column) storing the parsed dataset
 
     Raises
     -----------------------
     - ParsingError if file not found
     - ParsingError if missing field and `colnum_test is True`
       or missing field is among or between those in `fields`
+    - ParsingError if requested column(s) do not exist
     """
     if not os.path.isfile(file):
         raise ParsingError("file does not exist")
@@ -83,8 +84,8 @@ def parse_ds(
                 dtype=np.float64,
                 usecols=fields,
             )
-        except ValueError as lower:
-            raise ParsingError(lower) from lower
+        except ValueError as err:
+            raise ParsingError(err) from err
     else:
         # get all columns
         try:
@@ -94,11 +95,14 @@ def parse_ds(
                 dtype=np.float64,
                 usecols=None,
             )
-        except ValueError as lower:
-            raise ParsingError(lower) from lower
+        except ValueError as err:
+            raise ParsingError(err) from err
 
-        if fields is not None:
-            dataset = dataset[:, fields]
+        try:
+            if fields is not None:
+                dataset = dataset[:, fields]
+        except IndexError as err:
+            raise ParsingError(err) from err
 
     return dataset
 

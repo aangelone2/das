@@ -99,3 +99,45 @@ def test_empty_column():
         str(err.value)
         == "invalid column index 3 at row 3 with 3 columns"
     )
+
+
+def test_missing_column():
+    """Testing parsing of file without requested column."""
+
+    # testing colnum
+    with pytest.raises(ParsingError) as err:
+        ds = parse_ds(
+            "tests/data/complete.dat",
+            [3, 4],
+            colnum_test=True,
+        )
+    assert (
+        str(err.value)
+        == "index 4 is out of bounds for axis 1 with size 4"
+    )
+
+    # NOT testing colnum
+    with pytest.raises(ParsingError) as err:
+        ds = parse_ds(
+            "tests/data/complete.dat",
+            [3, 4],
+            colnum_test=False,
+        )
+    assert (
+        str(err.value)
+        == "invalid column index 4 at row 1 with 4 columns"
+    )
+
+    # proper parsing, 1 column
+    ds = parse_ds(
+        "tests/data/complete.dat", [2], colnum_test=False
+    )
+    assert np.array_equal(ds, np.array([3, 7, 3]))
+
+    # proper parsing, 2 columns
+    ds = parse_ds(
+        "tests/data/complete.dat", [1, 2], colnum_test=False
+    )
+    assert np.array_equal(
+        ds, np.array([[2, 3], [6, 7], [2, 3]])
+    )
