@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "das"
+version = "0.1.0"
+description = ""
+authors = ["Adriano Angelone <adriano.angelone@exact-lab.it>"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^1.25.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+pylint = "^2.17.5"
+pytest = "^7.4.0"
+pydocstyle = "^6.3.0"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "^1.4.2"
+mkdocstrings = {extras = ["python"], version = "^0.20"}
+mkdocs-material = "^9.1.19"
+mkdocs-render-swagger-plugin = "^0.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
