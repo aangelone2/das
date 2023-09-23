@@ -61,7 +61,7 @@ def parse_ds(
     Returns
     -----------------------
     np.array
-        A 2D array (1D if only 1 column) storing the parsed dataset
+        A 2D array storing the parsed dataset
 
     Raises
     -----------------------
@@ -83,6 +83,7 @@ def parse_ds(
                 comments="#",
                 dtype=np.float64,
                 usecols=fields,
+                ndmin=2,
             )
         except ValueError as err:
             raise ParsingError(err) from err
@@ -94,6 +95,7 @@ def parse_ds(
                 comments="#",
                 dtype=np.float64,
                 usecols=None,
+                ndmin=2,
             )
         except ValueError as err:
             raise ParsingError(err) from err
