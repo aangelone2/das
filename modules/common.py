@@ -108,7 +108,7 @@ def parse_ds(
 
 
 def drop_rows(
-    ds: np.array, skip_perc: float = 0.0, power2: bool = False
+    ds: np.array, skip_perc: int = 0, power2: bool = False
 ) -> np.array:
     """Remove rows from 2D array.
 

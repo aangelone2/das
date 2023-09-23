@@ -46,9 +46,9 @@ def main():
     avs_parser.add_argument(
         "-s",
         "--skip",
-        help="percentage of rows to skip (default = 0.0)",
-        type=float,
-        default=0.0,
+        help="percentage (1-100) of rows to skip (default = 0)",
+        type=int,
+        default=0,
     )
 
     args = parser.parse_args()
