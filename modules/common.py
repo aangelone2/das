@@ -56,8 +56,7 @@ def parse_ds(
     fields : list[int] | None, default = None
         List of fields to parse (0-indexed), all fields if None
     colnum_test: bool, default = False
-        If True, checks if all rows have the same number of
-        columns
+        If True, checks if all rows have the same number of columns
 
     Returns
     -----------------------
@@ -67,10 +66,9 @@ def parse_ds(
     Raises
     -----------------------
     - ParsingError if file not found
+    - ParsingError if missing field and `colnum_test is True`
+      or missing field is among or between those in `fields`
     """
-    # FIXME exceptions (fields not found,
-    # field number too large, ...)
-
     if not os.path.isfile(file):
         raise ParsingError("file does not exist")
 
@@ -78,17 +76,26 @@ def parse_ds(
         # only take selected columns, others ignored
         # (unless an empty column in or between the selected,
         # then an exception is raised)
-        dataset = np.loadtxt(
-            file,
-            comments="#",
-            dtype=np.float64,
-            usecols=fields,
-        )
+        try:
+            dataset = np.loadtxt(
+                file,
+                comments="#",
+                dtype=np.float64,
+                usecols=fields,
+            )
+        except ValueError as lower:
+            raise ParsingError("missing field") from lower
     else:
         # get all columns
-        dataset = np.loadtxt(
-            file, comments="#", dtype=np.float64, usecols=None
-        )
+        try:
+            dataset = np.loadtxt(
+                file,
+                comments="#",
+                dtype=np.float64,
+                usecols=None,
+            )
+        except ValueError as lower:
+            raise ParsingError("missing field") from lower
 
         if fields is not None:
             dataset = dataset[:, fields]

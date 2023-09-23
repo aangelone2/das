@@ -10,8 +10,9 @@ from modules.common import parse_ds
 def test_missing_file():
     """Testing parsing of nonexistent file."""
 
-    with pytest.raises(ParsingError):
+    with pytest.raises(ParsingError) as err:
         _ = parse_ds("tests/data/missing.dat", None, True)
+        assert err == "file does not exist"
 
 
 def test_empty_lines():
@@ -29,36 +30,40 @@ def test_empty_column():
     # missing value in last row, column 2
 
     # parsing all columns, testing colnum
-    with pytest.raises(ValueError):
+    with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
             None,
             colnum_test=True,
         )
+    assert str(err.value) == "missing field"
 
     # only parsing cols [0,1], testing colnum
-    with pytest.raises(ValueError):
+    with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
             [0, 1],
             colnum_test=True,
         )
+    assert str(err.value) == "missing field"
 
     # parsing columns [2,4], testing colnum
-    with pytest.raises(ValueError):
+    with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
             [2, 4],
             colnum_test=True,
         )
+    assert str(err.value) == "missing field"
 
     # parsing all columns, NOT testing colnum
-    with pytest.raises(ValueError):
+    with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
             None,
             colnum_test=False,
         )
+    assert str(err.value) == "missing field"
 
     # only parsing cols [0,1], NOT testing colnum
     # should pass (missing column not within parsed span)
@@ -72,9 +77,10 @@ def test_empty_column():
     )
 
     # parsing columns [2,4], NOT testing colnum
-    with pytest.raises(ValueError):
+    with pytest.raises(ParsingError) as err:
         ds = parse_ds(
             "tests/data/empty_column.dat",
             [2, 4],
             colnum_test=False,
         )
+    assert str(err.value) == "missing field"
