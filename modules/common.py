@@ -145,7 +145,7 @@ def drop_rows(
         keep = 2 ** (math.frexp(keep)[1] - 1)
         skip = rows - keep
 
-    return np.delete(ds, range(skip), axis=0)
+    return ds[skip:]
 
 
 def rebin(ds: np.array, nbins: int) -> np.array:
