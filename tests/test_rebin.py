@@ -1,5 +1,6 @@
 """Test module for rebin() function."""
 
+
 import numpy as np
 import pytest
 
