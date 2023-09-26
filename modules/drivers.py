@@ -9,14 +9,12 @@ avs()
 
 import numpy as np
 
-from modules.common import MAXBINS
 from modules.common import drop_rows
-from modules.common import rebin
 from modules.common import get_stats
 
 
 def avs(
-    ds: np.array, skip_perc: float, power2: bool
+    ds: np.array, skip_perc: float
 ) -> (list[dict[str, float]], str):
     """Compute simple average of a dataset by columns.
 
@@ -26,9 +24,6 @@ def avs(
         The dataset to parse
     skip_perc : float
         The percentage of rows to skip
-    power2 : bool
-        If True, skips additional rows to remain with a power
-        of 2 of rows
 
     Returns
     -----------------------
@@ -38,17 +33,10 @@ def avs(
     """
     rows = ds.shape[0]
 
-    ds = drop_rows(ds, skip_perc, power2)
+    ds = drop_rows(ds, skip_perc, power2=False)
     keep = ds.shape[0]
 
-    if power2:
-        bins = MAXBINS
-        ds = rebin(ds, bins)
-    else:
-        # no rebinning necessary here
-        bins = keep
-
-    report = f"{keep}/{rows} rows :: {bins} bins"
+    report = f"{keep}/{rows} rows :: {keep} bins"
 
     stats = get_stats(ds)
     for col_res in stats:
