@@ -30,6 +30,7 @@ from modules.parser import build_parser
 
 from modules.common import parse_ds
 from modules.drivers import avs
+from modules.drivers import ave
 from modules.print import print_avs
 
 
@@ -58,6 +59,9 @@ def main():
             verbose=args.verbose,
             basic=args.basic,
         )
+    elif args.command == "ave":
+        stats = ave(ds, args.skip)
+        # FIXME print
 
 
 if __name__ == "__main__":

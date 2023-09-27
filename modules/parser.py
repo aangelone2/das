@@ -88,5 +88,10 @@ def build_parser() -> argparse.ArgumentParser:
         description="performs averages without rebinning",
         parents=[parent_parser],
     )
+    _ = subp.add_parser(
+        "ave",
+        description="performs binsize scaling",
+        parents=[parent_parser],
+    )
 
     return parser

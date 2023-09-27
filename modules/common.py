@@ -17,6 +17,8 @@ ParsingError
     Subclassed exception for errors in dataset parsing.
 TailoringError
     Subclassed exception for errors in dataset tailoring.
+Stats
+    Result class for get_stats().
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -47,6 +49,7 @@ TailoringError
 
 import os
 from math import sqrt
+from dataclasses import dataclass
 
 import numpy as np
 
@@ -62,6 +65,28 @@ class ParsingError(Exception):
 
 class TailoringError(Exception):
     """Subclassed exception for errors in dataset tailoring."""
+
+
+@dataclass
+class Stats:
+    """Result class for get_stats().
+
+    Attributes
+    -----------------------
+    m : float
+        Average value of the column.
+    s : float
+        Standard error of the column.
+    ds : float
+        Standard error of `s`.
+    total : float
+        Sum of the column data.
+    """
+
+    m: float
+    s: float
+    ds: float
+    total: float
 
 
 def parse_ds(
@@ -209,7 +234,7 @@ def rebin(ds: np.array, nbins: int) -> np.array:
     return ds2
 
 
-def get_stats(ds: np.array) -> dict[str, float]:
+def get_stats(ds: np.array) -> list[Stats]:
     """Compute statistical observables for dataset.
 
     Parameters
@@ -219,12 +244,8 @@ def get_stats(ds: np.array) -> dict[str, float]:
 
     Returns
     -----------------------
-    list[dict[str, float]]
-        Dict of stats for each column, keys:
-          - m (average)
-          - s (standard deviation of the mean)
-          - ds (standard deviation of s)
-          - sum (sum)
+    list[Stats]
+        List of Stats object (one per column)
     """
     res = []
     N = ds.shape[0]
@@ -233,8 +254,8 @@ def get_stats(ds: np.array) -> dict[str, float]:
         m = col.mean()
         s = col.std(ddof=1) / sqrt(N)
         ds = s / sqrt(2.0 * (N - 1))
-        sm = col.sum()
+        total = col.sum()
 
-        res.append({"m": m, "s": s, "ds": ds, "sum": sm})
+        res.append(Stats(m=m, s=s, ds=ds, total=total))
 
     return res

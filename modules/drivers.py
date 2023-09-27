@@ -4,6 +4,8 @@ Functions
 -----------------------
 avs()
     Compute simple average of a dataset by columns.
+ave()
+    Compute binsize scaling of dataset averages and stds.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -34,7 +36,10 @@ avs()
 
 import numpy as np
 
+from modules.common import MAXBINS
+from modules.common import MINBINS
 from modules.common import drop_rows
+from modules.common import rebin
 from modules.common import get_stats
 
 
@@ -52,8 +57,8 @@ def avs(
 
     Returns
     -----------------------
-    (list[dict[str, float]], str)
-        - (mean, std, error on std) for each column (keys: (m, s, ds))
+    (list[Stats], str)
+        - list of Stats object, 1 per column
         - String carrying additional information
     """
     rows = ds.shape[0]
@@ -61,10 +66,41 @@ def avs(
     ds = drop_rows(ds, skip_perc, nbins=None)
     keep = ds.shape[0]
 
-    report = f"{keep}/{rows} rows :: {keep} bins"
+    report = f"{keep}/{rows} rows"
+    return (get_stats(ds), report)
 
-    stats = get_stats(ds)
-    for col_res in stats:
-        del col_res["sum"]
 
-    return (stats, report)
+def ave(
+    ds: np.array, skip_perc: float
+) -> dict[int, list[dict[str, float]]]:
+    """Compute binsize scaling of dataset averages and stds.
+
+    Parameters
+    -----------------------
+    ds : np.array
+        The dataset to parse
+    skip_perc : float
+        The percentage of rows to skip
+
+    Returns
+    -----------------------
+    dict[int, list[dict[str, float]]]
+        - primary index: number of bins
+        - list over column index
+        - (mean, std, error on std) for each column (keys: (m, s, ds))
+    """
+    ds = drop_rows(ds, skip_perc, nbins=MAXBINS)
+    ds = rebin(ds, nbins=MAXBINS)
+    rows = MAXBINS
+
+    stats = {}
+    while rows > MINBINS:
+        res = get_stats(ds)
+        for col_res in res:
+            del col_res["sum"]
+
+        stats[rows] = res
+        rows //= 2
+        ds = rebin(ds, nbins=rows)
+
+    return stats

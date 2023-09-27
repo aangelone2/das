@@ -1,6 +1,7 @@
 """Test module for get_stats() function."""
 
 
+from modules.common import Stats
 from modules.common import parse_ds
 from modules.common import drop_rows
 from modules.common import rebin
@@ -17,24 +18,24 @@ def test_get_stats():
 
     res = get_stats(ds)
     assert res == [
-        {
-            "m": 3.375,
-            "s": 0.5153882032022076,
-            "ds": 0.2104063528825433,
-            "sum": 13.5,
-        },
-        {
-            "m": 5.125,
-            "s": 1.637770333919462,
-            "ds": 0.6686169389950505,
-            "sum": 20.5,
-        },
-        {
-            "m": 4.0,
-            "s": 1.5,
-            "ds": 0.6123724356957946,
-            "sum": 16.0,
-        },
+        Stats(
+            m=3.375,
+            s=0.5153882032022076,
+            ds=0.2104063528825433,
+            total=13.5,
+        ),
+        Stats(
+            m=5.125,
+            s=1.637770333919462,
+            ds=0.6686169389950505,
+            total=20.5,
+        ),
+        Stats(
+            m=4.0,
+            s=1.5,
+            ds=0.6123724356957946,
+            total=16.0,
+        ),
     ]
 
 
@@ -48,10 +49,10 @@ def test_single_col():
 
     res = get_stats(ds)
     assert res == [
-        {
-            "m": 5.125,
-            "s": 1.637770333919462,
-            "ds": 0.6686169389950505,
-            "sum": 20.5,
-        }
+        Stats(
+            m=5.125,
+            s=1.637770333919462,
+            ds=0.6686169389950505,
+            total=20.5,
+        )
     ]

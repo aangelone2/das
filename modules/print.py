@@ -35,12 +35,14 @@ print_avs()
 from rich.console import Console
 from rich.table import Table
 
+from common import Stats
+
 
 console = Console()
 
 
 def print_avs(
-    stats: list[dict[str, float]],
+    stats: list[Stats],
     report: str,
     fields: list[int] | None,
     verbose: bool,
@@ -50,7 +52,7 @@ def print_avs(
 
     Parameters
     -----------------------
-    stats : list[dict[str, float]]
+    stats : list[Stats]
         The main results from a call to avs()
     report : str
         The report string
@@ -79,9 +81,9 @@ def print_avs(
         for col, col_stats in zip(cols, stats):
             table.add_row(
                 f"{col}",
-                f'{col_stats["m"]:.11e}',
-                f'{col_stats["s"]:.1e}',
-                f'{col_stats["ds"]:.1e}',
+                f"{col_stats.m:.11e}",
+                f"{col_stats.s:.1e}",
+                f"{col_stats.ds:.1e}",
             )
 
         console.print(table)
@@ -93,7 +95,7 @@ def print_avs(
         for col, col_stats in zip(cols, stats):
             print(
                 f"{col}",
-                f'{col_stats["m"]:.11e}',
-                f'{col_stats["s"]:.1e}',
-                f'{col_stats["ds"]:.1e}',
+                f"{col_stats.m:.11e}",
+                f"{col_stats.s:.1e}",
+                f"{col_stats.ds:.1e}",
             )
