@@ -58,7 +58,7 @@ def avs(
     """
     rows = ds.shape[0]
 
-    ds = drop_rows(ds, skip_perc, power2=False)
+    ds = drop_rows(ds, skip_perc, nbins=None)
     keep = ds.shape[0]
 
     report = f"{keep}/{rows} rows :: {keep} bins"

@@ -14,7 +14,7 @@ def test_successful():
     """Test a successful binning schema."""
 
     ds = parse_ds("tests/data/rb-01-short.dat", None, True)
-    ds = drop_rows(ds, skip_perc=30, power2=True)
+    ds = drop_rows(ds, skip_perc=30, nbins=8)
     assert ds.shape == (8, 3)
 
     ds1 = rebin(ds, nbins=4)
@@ -40,7 +40,7 @@ def test_failure():
     """Test failures in binning schemas."""
 
     ds = parse_ds("tests/data/rb-01-short.dat", None, True)
-    ds = drop_rows(ds, skip_perc=30, power2=True)
+    ds = drop_rows(ds, skip_perc=30, nbins=8)
     assert ds.shape == (8, 3)
 
     with pytest.raises(TailoringError) as err:
@@ -56,7 +56,7 @@ def test_single():
     """Test binning with single column."""
 
     ds = parse_ds("tests/data/rb-01-short.dat", [1], True)
-    ds = drop_rows(ds, skip_perc=30, power2=True)
+    ds = drop_rows(ds, skip_perc=30, nbins=8)
     assert ds.shape == (8, 1)
 
     ds1 = rebin(ds, nbins=4)

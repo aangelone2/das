@@ -11,7 +11,7 @@ def test_get_stats():
     """Test a sample datafile."""
 
     ds = parse_ds("tests/data/rb-01-short.dat", None, True)
-    ds = drop_rows(ds, skip_perc=30, power2=True)
+    ds = drop_rows(ds, skip_perc=30, nbins=8)
     ds = rebin(ds, nbins=4)
     assert ds.shape == (4, 3)
 
@@ -42,7 +42,7 @@ def test_single_col():
     """Test a single-column dataset."""
 
     ds = parse_ds("tests/data/rb-01-short.dat", [1], True)
-    ds = drop_rows(ds, skip_perc=30, power2=True)
+    ds = drop_rows(ds, skip_perc=30, nbins=8)
     ds = rebin(ds, nbins=4)
     assert ds.shape == (4, 1)
 

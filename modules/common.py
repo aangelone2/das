@@ -46,7 +46,7 @@ TailoringError
 
 
 import os
-import math
+from math import sqrt
 
 import numpy as np
 
@@ -135,7 +135,7 @@ def parse_ds(
 
 
 def drop_rows(
-    ds: np.array, skip_perc: int = 0, power2: bool = False
+    ds: np.array, skip_perc: int = 0, nbins: int | None = None
 ) -> np.array:
     """Remove rows from 2D array.
 
@@ -145,9 +145,9 @@ def drop_rows(
         The dataset to tailor
     skip_perc : float, default = 0.0
         Percentage of rows to skip
-    power2 : bool, default = False
-        After `perc`, skips enough to leave the closest power
-        of 2 if True
+    nbins : int | None, default = None
+        If not None, will skip additional rows to allow this
+        number of identical bins
 
     Returns
     -----------------------
@@ -156,18 +156,18 @@ def drop_rows(
 
     Raises
     -----------------------
-    - TailoringError if `power2` set and not enough rows left
+    - TailoringError if `nbins` set and not enough rows left
     """
     rows = ds.shape[0]
 
     skip = int((skip_perc / 100.0) * rows)
     keep = rows - skip
 
-    if power2:
-        if keep < 2:
-            raise TailoringError("insufficient number of rows")
+    if nbins is not None:
+        if nbins > keep:
+            raise TailoringError("insufficient rows left")
 
-        keep = 2 ** (math.frexp(keep)[1] - 1)
+        keep -= keep % nbins
         skip = rows - keep
 
     return ds[skip:]
@@ -231,8 +231,8 @@ def get_stats(ds: np.array) -> dict[str, float]:
 
     for col in ds.T:
         m = col.mean()
-        s = col.std(ddof=1) / math.sqrt(N)
-        ds = s / math.sqrt(2.0 * (N - 1))
+        s = col.std(ddof=1) / sqrt(N)
+        ds = s / sqrt(2.0 * (N - 1))
         sm = col.sum()
 
         res.append({"m": m, "s": s, "ds": ds, "sum": sm})
