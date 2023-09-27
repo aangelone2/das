@@ -4,6 +4,8 @@ Functions
 -----------------------
 print_avs()
     Print `avs` results in formatted way.
+print_ave()
+    Print `ave` results in formatted way.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -53,7 +55,7 @@ def print_avs(
     Parameters
     -----------------------
     stats : list[Stats]
-        The main results from a call to avs()
+        The first result from a call to avs()
     report : str
         The report string
     fields : list[int] | None
@@ -99,3 +101,54 @@ def print_avs(
                 f"{col_stats.s:.1e}",
                 f"{col_stats.ds:.1e}",
             )
+
+
+def print_ave(
+    stats: dict[int, list[Stats]],
+    fields: list[int] | None,
+    basic: bool,
+) -> None:
+    """Print `ave` results in formatted way.
+
+    Parameters
+    -----------------------
+    stats : dict[int, list[Stats]]
+        The result from a call to ave()
+    fields : list[int] | None
+        The analyzed columns
+    basic : bool
+        If True, uses parse-friendly formatting
+    """
+    cols = (
+        range(1, len(stats) + 1) if fields is None else fields
+    )
+
+    if not basic:
+        table = Table()
+        table.add_column("column")
+        table.add_column("bin number")
+        table.add_column("mean")
+        table.add_column("σ of mean")
+        table.add_column("σ of σ of mean")
+
+        for col, scaling in zip(cols, stats):
+            for nbins, res in scaling.items():
+                table.add_row(
+                    f"{col}",
+                    f"{nbins}",
+                    f"{res.m:.11e}",
+                    f"{res.s:.1e}",
+                    f"{res.ds:.1e}",
+                )
+
+        console.print(table)
+    else:
+        for col, scaling in zip(cols, stats):
+            for nbins, res in scaling.items():
+                print(
+                    f"{col}",
+                    f"{nbins}",
+                    f"{res.m:.11e}",
+                    f"{res.s:.1e}",
+                    f"{res.ds:.1e}",
+                )

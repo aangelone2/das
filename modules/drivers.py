@@ -38,6 +38,7 @@ import numpy as np
 
 from modules.common import MAXBINS
 from modules.common import MINBINS
+from modules.common import Stats
 from modules.common import drop_rows
 from modules.common import rebin
 from modules.common import get_stats
@@ -72,7 +73,7 @@ def avs(
 
 def ave(
     ds: np.array, skip_perc: float
-) -> dict[int, list[dict[str, float]]]:
+) -> list[dict[int, Stats]]:
     """Compute binsize scaling of dataset averages and stds.
 
     Parameters
@@ -84,23 +85,29 @@ def ave(
 
     Returns
     -----------------------
-    dict[int, list[dict[str, float]]]
-        - primary index: number of bins
-        - list over column index
-        - (mean, std, error on std) for each column (keys: (m, s, ds))
+    list[dict[int, Stats]]
+        List of dictionaries {nbins: Stats}, 1 per column
     """
     ds = drop_rows(ds, skip_perc, nbins=MAXBINS)
     ds = rebin(ds, nbins=MAXBINS)
     rows = MAXBINS
 
-    stats = {}
+    # dictionary-of-lists
+    buffer = {}
     while rows > MINBINS:
-        res = get_stats(ds)
-        for col_res in res:
-            del col_res["sum"]
-
-        stats[rows] = res
+        buffer[rows] = get_stats(ds)
         rows //= 2
         ds = rebin(ds, nbins=rows)
+
+    # buffer -> list-of-dictionaries
+    cols = len(buffer[1024])
+    stats = []
+    for col in range(cols):
+        stats.append(
+            {
+                nbins: nbins_stats[col]
+                for nbins, nbins_stats in buffer.items()
+            }
+        )
 
     return stats

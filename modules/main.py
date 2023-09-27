@@ -32,6 +32,7 @@ from modules.common import parse_ds
 from modules.drivers import avs
 from modules.drivers import ave
 from modules.print import print_avs
+from modules.print import print_ave
 
 
 def main():
@@ -61,7 +62,7 @@ def main():
         )
     elif args.command == "ave":
         stats = ave(ds, args.skip)
-        # FIXME print
+        print_ave(stats, fields=args.fields, basic=args.basic)
 
 
 if __name__ == "__main__":
