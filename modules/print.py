@@ -38,6 +38,7 @@ from rich.console import Console
 from rich.table import Table
 
 from modules.common import Stats
+from modules.common import BinnedStats
 
 
 console = Console()
@@ -101,11 +102,11 @@ def print_avs(
         for c, m, s, ds in zip(
             cols, stats.m, stats.s, stats.ds
         ):
-            print(f"{c} {m:.11e} {s:.1e} {ds:.1e}")
+            print(f"{c} {m:+.11e} {s:.1e} {ds:.1e}")
 
 
 def print_ave(
-    stats: dict[int, list[Stats]],
+    stats: list[BinnedStats],
     fields: list[int] | None,
     basic: bool,
 ) -> None:
@@ -113,7 +114,7 @@ def print_ave(
 
     Parameters
     -----------------------
-    stats : dict[int, list[Stats]]
+    stats : list[BinnedStats]
         The result from a call to ave()
     fields : list[int] | None
         The analyzed columns
@@ -133,23 +134,24 @@ def print_ave(
         table.add_column("σ of σ of mean")
 
         for col, scaling in zip(cols, stats):
-            for nbins, res in scaling.items():
+            for nb, m, s, ds in zip(
+                scaling.nbins, scaling.m, scaling.s, scaling.ds
+            ):
                 table.add_row(
                     f"{col}",
-                    f"{nbins}",
-                    f"{res.m:.11e}",
-                    f"{res.s:.1e}",
-                    f"{res.ds:.1e}",
+                    f"{nb}",
+                    f"{m:.11e}",
+                    f"{s:.1e}",
+                    f"{ds:.1e}",
                 )
+            table.add_section()
 
         console.print(table)
     else:
         for col, scaling in zip(cols, stats):
-            for nbins, res in scaling.items():
+            for nb, m, s, ds in zip(
+                scaling.nbins, scaling.m, scaling.s, scaling.ds
+            ):
                 print(
-                    f"{col}",
-                    f"{nbins}",
-                    f"{res.m:.11e}",
-                    f"{res.s:.1e}",
-                    f"{res.ds:.1e}",
+                    f"{col} {nb:04d} {m:+.11e} {s:.1e} {ds:.1e}"
                 )

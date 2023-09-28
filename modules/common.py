@@ -19,6 +19,8 @@ TailoringError
     Subclassed exception for errors in dataset tailoring.
 Stats
     Result class for get_stats().
+BinnedStats
+    Results of bin number scaling (single column).
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -83,6 +85,31 @@ class Stats:
         Column sums.
     """
 
+    m: list[float]
+    s: list[float]
+    ds: list[float]
+    total: list[float]
+
+
+@dataclass
+class BinnedStats:
+    """Results of bin number scaling (single column).
+
+    Attributes
+    -----------------------
+    nbins: list[int]
+        List of binsizes.
+    m : list[float]
+        Average per binsize.
+    s : list[float]
+        Standard error of the mean per binsize.
+    ds : list[float]
+        Standard error of `s` per binsize.
+    total : list[float]
+        Sum per binsize.
+    """
+
+    nbins: list[int]
     m: list[float]
     s: list[float]
     ds: list[float]
