@@ -44,9 +44,7 @@ from modules.common import rebin
 from modules.common import get_stats
 
 
-def avs(
-    ds: np.array, skip_perc: float
-) -> (list[dict[str, float]], str):
+def avs(ds: np.array, skip_perc: float) -> (Stats, str):
     """Compute simple average of a dataset by columns.
 
     Parameters
@@ -58,8 +56,8 @@ def avs(
 
     Returns
     -----------------------
-    (list[Stats], str)
-        - list of Stats object, 1 per column
+    (Stats, str)
+        - Stats object with column statistics
         - String carrying additional information
     """
     rows = ds.shape[0]

@@ -37,14 +37,14 @@ print_ave()
 from rich.console import Console
 from rich.table import Table
 
-from common import Stats
+from modules.common import Stats
 
 
 console = Console()
 
 
 def print_avs(
-    stats: list[Stats],
+    stats: Stats,
     report: str,
     fields: list[int] | None,
     verbose: bool,
@@ -54,7 +54,7 @@ def print_avs(
 
     Parameters
     -----------------------
-    stats : list[Stats]
+    stats : Stats
         The first result from a call to avs()
     report : str
         The report string
@@ -66,7 +66,9 @@ def print_avs(
         If True, uses parse-friendly formatting
     """
     cols = (
-        range(1, len(stats) + 1) if fields is None else fields
+        range(1, len(stats.m) + 1)
+        if fields is None
+        else fields
     )
 
     if not basic:
@@ -80,12 +82,14 @@ def print_avs(
         table.add_column("σ of mean")
         table.add_column("σ of σ of mean")
 
-        for col, col_stats in zip(cols, stats):
+        for c, m, s, ds in zip(
+            cols, stats.m, stats.s, stats.ds
+        ):
             table.add_row(
-                f"{col}",
-                f"{col_stats.m:.11e}",
-                f"{col_stats.s:.1e}",
-                f"{col_stats.ds:.1e}",
+                f"{c}",
+                f"{m:.11e}",
+                f"{s:.1e}",
+                f"{ds:.1e}",
             )
 
         console.print(table)
@@ -94,13 +98,10 @@ def print_avs(
             print(report)
             print()
 
-        for col, col_stats in zip(cols, stats):
-            print(
-                f"{col}",
-                f"{col_stats.m:.11e}",
-                f"{col_stats.s:.1e}",
-                f"{col_stats.ds:.1e}",
-            )
+        for c, m, s, ds in zip(
+            cols, stats.m, stats.s, stats.ds
+        ):
+            print(f"{c} {m:.11e} {s:.1e} {ds:.1e}")
 
 
 def print_ave(

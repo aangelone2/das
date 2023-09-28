@@ -15,17 +15,21 @@ def test_simple():
 
     assert report == "8000/10000 rows"
 
-    assert stats[0].m == 0.502596645631248
-    assert stats[0].s == 0.0032166135733013423
-    assert stats[0].ds == 2.543115260732433e-05
-
-    assert stats[1].m == 0.498392322922783
-    assert stats[1].s == 0.003192300587095481
-    assert stats[1].ds == 2.523892956018148e-05
-
-    assert stats[2].m == 0.5029735829100479
-    assert stats[2].s == 0.0032306606710632837
-    assert stats[2].ds == 2.5542211607335726e-05
+    assert stats.m == [
+        0.502596645631248,
+        0.498392322922783,
+        0.5029735829100479,
+    ]
+    assert stats.s == [
+        0.0032166135733013423,
+        0.003192300587095481,
+        0.0032306606710632837,
+    ]
+    assert stats.ds == [
+        2.543115260732433e-05,
+        2.523892956018148e-05,
+        2.5542211607335726e-05,
+    ]
 
 
 # def test_power2():
@@ -67,9 +71,9 @@ def test_single_column():
 
     assert report == "8000/10000 rows"
 
-    assert stats[0].m == 0.5029735829100479
-    assert stats[0].s == 0.0032306606710632837
-    assert stats[0].ds == 2.5542211607335726e-05
+    assert stats.m == [0.5029735829100479]
+    assert stats.s == [0.0032306606710632837]
+    assert stats.ds == [2.5542211607335726e-05]
 
 
 #    # power-2

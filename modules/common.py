@@ -73,20 +73,20 @@ class Stats:
 
     Attributes
     -----------------------
-    m : float
-        Average value of the column.
-    s : float
-        Standard error of the column.
-    ds : float
-        Standard error of `s`.
-    total : float
-        Sum of the column data.
+    m : list[float]
+        Column averages.
+    s : list[float]
+        Column standard errors of the mean.
+    ds : list[float]
+        Column standard errors of `s`.
+    total : list[float]
+        Column sums.
     """
 
-    m: float
-    s: float
-    ds: float
-    total: float
+    m: list[float]
+    s: list[float]
+    ds: list[float]
+    total: list[float]
 
 
 def parse_ds(
@@ -234,7 +234,7 @@ def rebin(ds: np.array, nbins: int) -> np.array:
     return ds2
 
 
-def get_stats(ds: np.array) -> list[Stats]:
+def get_stats(ds: np.array) -> Stats:
     """Compute statistical observables for dataset.
 
     Parameters
@@ -244,18 +244,16 @@ def get_stats(ds: np.array) -> list[Stats]:
 
     Returns
     -----------------------
-    list[Stats]
-        List of Stats object (one per column)
+    Stats
+        Stats object with column statistical summary
     """
-    res = []
     N = ds.shape[0]
 
+    res = Stats(m=[], s=[], ds=[], total=[])
     for col in ds.T:
-        m = col.mean()
-        s = col.std(ddof=1) / sqrt(N)
-        ds = s / sqrt(2.0 * (N - 1))
-        total = col.sum()
-
-        res.append(Stats(m=m, s=s, ds=ds, total=total))
+        res.m.append(col.mean())
+        res.s.append(col.std(ddof=1) / sqrt(N))
+        res.ds.append(res.s[-1] / sqrt(2.0 * (N - 1)))
+        res.total.append(col.sum())
 
     return res
