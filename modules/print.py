@@ -107,7 +107,9 @@ def print_avs(
 
 def print_ave(
     stats: list[BinnedStats],
+    report: str,
     fields: list[int] | None,
+    verbose: bool,
     basic: bool,
 ) -> None:
     """Print `ave` results in formatted way.
@@ -116,8 +118,12 @@ def print_ave(
     -----------------------
     stats : list[BinnedStats]
         The result from a call to ave()
+    report : str
+        The report string
     fields : list[int] | None
         The analyzed columns
+    verbose : bool
+        If True, prints the report information
     basic : bool
         If True, uses parse-friendly formatting
     """
@@ -126,20 +132,30 @@ def print_ave(
     )
 
     if not basic:
+        if verbose:
+            console.print(report)
+            console.print()
+
         table = Table()
-        table.add_column("column")
-        table.add_column("bin number")
+        table.add_column("col")
+        table.add_column("bins")
+        table.add_column("binsize")
         table.add_column("mean")
         table.add_column("σ of mean")
         table.add_column("σ of σ of mean")
 
         for col, scaling in zip(cols, stats):
-            for nb, m, s, ds in zip(
-                scaling.nbins, scaling.m, scaling.s, scaling.ds
+            for nb, bs, m, s, ds in zip(
+                scaling.nbins,
+                scaling.bsize,
+                scaling.m,
+                scaling.s,
+                scaling.ds,
             ):
                 table.add_row(
                     f"{col}",
                     f"{nb}",
+                    f"{bs}",
                     f"{m:.11e}",
                     f"{s:.1e}",
                     f"{ds:.1e}",
@@ -148,10 +164,18 @@ def print_ave(
 
         console.print(table)
     else:
+        if verbose:
+            print(report)
+            print()
+
         for col, scaling in zip(cols, stats):
-            for nb, m, s, ds in zip(
-                scaling.nbins, scaling.m, scaling.s, scaling.ds
+            for nb, bs, m, s, ds in zip(
+                scaling.nbins,
+                scaling.bsize,
+                scaling.m,
+                scaling.s,
+                scaling.ds,
             ):
                 print(
-                    f"{col} {nb:04d} {m:+.11e} {s:.1e} {ds:.1e}"
+                    f"{col} {nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}"
                 )

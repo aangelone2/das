@@ -98,6 +98,8 @@ class BinnedStats:
     Attributes
     -----------------------
     nbins: list[int]
+        List of bin numbers.
+    bsize: list[int]
         List of binsizes.
     m : list[float]
         Average per binsize.
@@ -110,6 +112,7 @@ class BinnedStats:
     """
 
     nbins: list[int]
+    bsize: list[int]
     m: list[float]
     s: list[float]
     ds: list[float]

@@ -61,8 +61,14 @@ def main():
             basic=args.basic,
         )
     elif args.command == "ave":
-        stats = ave(ds, args.skip)
-        print_ave(stats, fields=args.fields, basic=args.basic)
+        stats, report = ave(ds, args.skip)
+        print_ave(
+            stats,
+            report,
+            fields=args.fields,
+            verbose=args.verbose,
+            basic=args.basic,
+        )
 
 
 if __name__ == "__main__":
