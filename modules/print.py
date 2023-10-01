@@ -80,8 +80,8 @@ def print_avs(
         table = Table()
         table.add_column("column")
         table.add_column("mean")
-        table.add_column("σ of mean")
-        table.add_column("σ of σ of mean")
+        table.add_column("SEM")
+        table.add_column("SE(SEM)")
 
         for c, m, s, ds in zip(
             cols, stats.m, stats.s, stats.ds
@@ -141,8 +141,8 @@ def print_ave(
         table.add_column("bins")
         table.add_column("binsize")
         table.add_column("mean")
-        table.add_column("σ of mean")
-        table.add_column("σ of σ of mean")
+        table.add_column("SEM")
+        table.add_column("SE(SEM)")
 
         for col, scaling in zip(cols, stats):
             for nb, bs, m, s, ds in zip(

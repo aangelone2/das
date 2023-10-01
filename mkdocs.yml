@@ -10,7 +10,9 @@ plugins:
 
 nav:
   - Homepage: index.md
+  - Statistical background: statistics.md
   - Drivers:
+      - drivers/common.md
       - drivers/avs.md
   - Module reference:
       - reference/common.md
