@@ -46,17 +46,18 @@ def build_parser() -> argparse.ArgumentParser:
     # parent parser with shared options
     parent_parser = argparse.ArgumentParser(add_help=False)
     parent_parser.add_argument(
-        "-b",
-        "--basic",
-        help="simplified, parsing-friendly output formatting",
-        action="store_true",
-    )
-    parent_parser.add_argument(
         "-f",
         "--fields",
         type=str,
         help="comma-separated, 1-indexed fields to analyze (default = all)",
         default=None,
+    )
+    parent_parser.add_argument(
+        "-s",
+        "--skip",
+        help="percentage (1-100) of rows to skip (default = 0)",
+        type=int,
+        default=0,
     )
     parent_parser.add_argument(
         "-q",
@@ -65,17 +66,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
     )
     parent_parser.add_argument(
+        "-b",
+        "--basic",
+        help="simplified, parsing-friendly output formatting",
+        action="store_true",
+    )
+    parent_parser.add_argument(
         "-v",
         "--verbose",
         help="verbose output",
         action="store_true",
-    )
-    parent_parser.add_argument(
-        "-s",
-        "--skip",
-        help="percentage (1-100) of rows to skip (default = 0)",
-        type=int,
-        default=0,
     )
     parent_parser.add_argument("file", help="file to analyze")
 

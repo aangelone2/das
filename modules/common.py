@@ -21,6 +21,11 @@ Stats
     Result class for get_stats().
 BinnedStats
     Results of bin number scaling (single column).
+
+Constants
+-----------------------
+MAXBINS, MINBINS
+    Maximum and minimum number of bins considered in scaling.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -146,8 +151,7 @@ def parse_ds(
     Raises
     -----------------------
     - ParsingError if file not found
-    - ParsingError if missing field and `colnum_test is True`
-      or missing field is among or between those in `fields`
+    - ParsingError if missing field and `colnum_test is True` or missing field is among or between those in `fields`
     - ParsingError if requested column(s) do not exist
     """
     if not os.path.isfile(file):
