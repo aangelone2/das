@@ -26,8 +26,9 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from modules.parser import build_parser
+import sys
 
+from modules.parser import build_parser
 from modules.common import parse_ds
 from modules.drivers import avs
 from modules.drivers import ave
@@ -35,10 +36,21 @@ from modules.print import print_avs
 from modules.print import print_ave
 
 
+VERSION_MAJOR = 1
+VERSION_MINOR = 0
+VERSION_REVISION = 0
+
+
 def main():
     """Implement main entrypoint."""
     parser = build_parser()
     args = parser.parse_args()
+
+    if args.version:
+        print(
+            f"das {VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_REVISION}"
+        )
+        sys.exit(0)
 
     # converting to list of integers,
     # raises ValueError and terminates if invalid value

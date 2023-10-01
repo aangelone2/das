@@ -80,9 +80,14 @@ def build_parser() -> argparse.ArgumentParser:
     parent_parser.add_argument("file", help="file to analyze")
 
     # main parser
-    parser = argparse.ArgumentParser()
-    subp = parser.add_subparsers(dest="command")
+    parser = argparse.ArgumentParser(prog="das")
+    parser.add_argument(
+        "--version",
+        help="display version number and exit",
+        action="store_true",
+    )
 
+    subp = parser.add_subparsers(dest="command")
     _ = subp.add_parser(
         "avs",
         description="performs averages without rebinning",
