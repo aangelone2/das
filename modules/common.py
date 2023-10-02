@@ -3,7 +3,7 @@
 Functions
 -----------------------
 parse_ds()
-    Parse a 2D data set from a file.
+    Parse a 2D array from a file.
 drop_rows()
     Remove rows from 2D array.
 rebin()
@@ -18,14 +18,9 @@ ParsingError
 TailoringError
     Subclassed exception for errors in dataset tailoring.
 Stats
-    Result class for get_stats().
+    Result class for `get_stats()`.
 BinnedStats
     Results of bin number scaling (single column).
-
-Constants
------------------------
-MAXBINS, MINBINS
-    Maximum and minimum number of bins considered in scaling.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -76,16 +71,16 @@ class TailoringError(Exception):
 
 @dataclass
 class Stats:
-    """Result class for get_stats().
+    """Result class for `get_stats()`.
 
     Attributes
     -----------------------
     m : list[float]
         Column averages.
     s : list[float]
-        Column standard errors of the mean.
+        Column SEMs.
     ds : list[float]
-        Column standard errors of `s`.
+        Column SE(SEM)s.
     total : list[float]
         Column sums.
     """
@@ -109,9 +104,9 @@ class BinnedStats:
     m : list[float]
         Average per binsize.
     s : list[float]
-        Standard error of the mean per binsize.
+        SEM per binsize.
     ds : list[float]
-        Standard error of `s` per binsize.
+        SE(SEM) per binsize.
     total : list[float]
         Sum per binsize.
     """
@@ -129,30 +124,38 @@ def parse_ds(
     fields: list[int] | None = None,
     colnum_test: bool = False,
 ) -> np.array:
-    """Parse a 2D data set from a file.
+    """Parse a 2D array from a file.
 
-    - Empty and commented (#) lines are skipped
-    - Does not accept non-commented headers
+    - Empty and commented (`#`) lines are skipped.
+    - Does not accept non-commented headers.
 
     Parameters
     -----------------------
     file : str
-        The file to open for reading
+        Path to the file to open for reading.
     fields : list[int] | None, default = None
-        List of fields to parse (0-indexed), all fields if None
+        List of fields to parse (0-indexed), all fields if
+        `None`.
     colnum_test: bool, default = False
-        If True, checks if all rows have the same number of columns
+        If `True`, checks if all rows have the same number of
+        columns.
 
     Returns
     -----------------------
     np.array
-        A 2D array storing the parsed dataset
+        A 2D array storing the parsed dataset.
 
     Raises
     -----------------------
-    - ParsingError if file not found
-    - ParsingError if missing field and `colnum_test is True` or missing field is among or between those in `fields`
-    - ParsingError if requested column(s) do not exist
+    ParsingError
+        If file not found.
+    ParsingError
+        If any field is missing and `colnum_test is True`.
+    ParsingError
+        If missing field is among or between those in `fields`,
+        regardless of `colnum_test`.
+    ParsingError
+        If requested column(s) do not exist.
     """
     if not os.path.isfile(file):
         raise ParsingError("file does not exist")
@@ -201,21 +204,22 @@ def drop_rows(
     Parameters
     -----------------------
     ds : np.array
-        The dataset to tailor
-    skip_perc : float, default = 0.0
-        Percentage of rows to skip
+        The dataset to tailor.
+    skip_perc : int, default = 0
+        Percentage (1-100) of rows to skip.
     nbins : int | None, default = None
-        If not None, will skip additional rows to allow this
-        number of identical bins
+        If not `None`, will skip additional rows to allow this
+        number of identical bins.
 
     Returns
     -----------------------
     np.array
-        The tailored array
+        The tailored array.
 
     Raises
     -----------------------
-    - TailoringError if `nbins` set and not enough rows left
+    TailoringError
+        If `nbins` set and not enough rows left.
     """
     rows = ds.shape[0]
 
@@ -238,19 +242,21 @@ def rebin(ds: np.array, nbins: int) -> np.array:
     Parameters
     -----------------------
     ds : np.array
-        The dataset to rebin
+        The dataset to rebin.
     nbins : int
-        Number of requested bins
+        Number of requested bins.
 
     Returns
     -----------------------
     np.array
-        The rebinned array
+        The rebinned array.
 
     Raises
     -----------------------
-    - TailoringError if insufficient rows for binning
-    - TailoringError if leftover rows after binning
+    TailoringError
+        If insufficient rows for binning.
+    TailoringError
+        If leftover rows after binning.
     """
     if ds.shape[0] < nbins:
         raise TailoringError("insufficient rows for binning")
@@ -274,12 +280,12 @@ def get_stats(ds: np.array) -> Stats:
     Parameters
     -----------------------
     ds : np.array
-        The dataset to analyze
+        The dataset to analyze.
 
     Returns
     -----------------------
     Stats
-        Stats object with column statistical summary
+        Stats object with column statistical summary.
     """
     N = ds.shape[0]
 

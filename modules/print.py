@@ -56,15 +56,15 @@ def print_avs(
     Parameters
     -----------------------
     stats : Stats
-        The first result from a call to avs()
+        The first result from a call to `avs()`.
     report : str
-        The report string
+        The report string.
     fields : list[int] | None
-        The analyzed columns
+        The analyzed columns.
     verbose : bool
-        If True, prints the report information
+        If `True`, prints the report information.
     basic : bool
-        If True, uses parse-friendly formatting
+        If `True`, uses parse-friendly formatting.
     """
     cols = (
         range(1, len(stats.m) + 1)
@@ -119,13 +119,13 @@ def print_ave(
     stats : list[BinnedStats]
         The result from a call to ave()
     report : str
-        The report string
+        The report string.
     fields : list[int] | None
-        The analyzed columns
+        The analyzed columns.
     verbose : bool
-        If True, prints the report information
+        If `True`, prints the report information.
     basic : bool
-        If True, uses parse-friendly formatting
+        If `True`, uses parse-friendly formatting.
     """
     cols = (
         range(1, len(stats) + 1) if fields is None else fields

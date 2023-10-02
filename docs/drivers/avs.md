@@ -52,8 +52,8 @@ resulting in the output
 ![fancy-output](avs-01.png)
 
 where the notation is the one introduced in the [statistical
-background](statistics.md) and each row of the resulting table
-corresponds to one of the analyzed columns.
+background](../statistics.md) and each row of the resulting
+table corresponds to one of the analyzed columns.
 
 Adding the `-b, --basic` option will result in the
 parser-friendly, unformatted output

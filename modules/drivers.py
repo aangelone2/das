@@ -3,9 +3,11 @@
 Functions
 -----------------------
 avs()
-    Compute simple average of a dataset by columns.
+    Compute simple average, SEMs, and SE(SEM)s of a 2D array by
+    columns.
 ave()
-    Compute binsize scaling of dataset averages and stds.
+    Compute binsize scaling of averages, SEMs, and SE(SEM)s of
+    a 2D array by columns.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -45,21 +47,21 @@ from modules.common import rebin
 from modules.common import get_stats
 
 
-def avs(ds: np.array, skip_perc: float) -> (Stats, str):
-    """Compute simple average of a dataset by columns.
+def avs(ds: np.array, skip_perc: int) -> (Stats, str):
+    """Compute simple average, SEMs, and SE(SEM)s of a 2D array by columns.
 
     Parameters
     -----------------------
     ds : np.array
-        The dataset to parse
-    skip_perc : float
-        The percentage of rows to skip
+        The 2D array to parse.
+    skip_perc : int
+        The percentage (1-100) of rows to skip.
 
     Returns
     -----------------------
     (Stats, str)
-        - Stats object with column statistics
-        - String carrying additional information
+        - Stats object with column statistics.
+        - String carrying additional information.
     """
     rows = ds.shape[0]
 
@@ -71,22 +73,22 @@ def avs(ds: np.array, skip_perc: float) -> (Stats, str):
 
 
 def ave(
-    ds: np.array, skip_perc: float
+    ds: np.array, skip_perc: int
 ) -> (list[BinnedStats], str):
-    """Compute binsize scaling of dataset averages and stds.
+    """Compute binsize scaling of averages, SEMs, and SE(SEM)s of a 2D array by columns.
 
     Parameters
     -----------------------
     ds : np.array
-        The dataset to parse
-    skip_perc : float
-        The percentage of rows to skip
+        The 2D array to parse.
+    skip_perc : int
+        The percentage (1-100) of rows to skip.
 
     Returns
     -----------------------
     (list[BinnedStats], str)
-        - List of BinnedStats objects, 1 per column
-        - String carrying additional information
+        - List of `BinnedStats` objects, 1 per column.
+        - String carrying additional information.
     """
     rows = ds.shape[0]
     ds = drop_rows(ds, skip_perc, nbins=MAXBINS)
