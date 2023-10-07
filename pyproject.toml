@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "das"
-version = "1.0.0"
+version = "1.0.2"
 description = ""
-authors = ["Adriano Angelone <adriano.angelone@exact-lab.it>"]
+authors = ["Adriano Angelone <adriano.angelone.work@gmail.com>"]
 readme = "README.md"
 packages = []
 

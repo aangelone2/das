@@ -100,23 +100,20 @@ def ave(
     cols = ds.shape[1]
 
     res = [
-        BinnedStats(
-            nbins=[], bsize=[], m=[], s=[], ds=[], total=[]
-        )
+        BinnedStats(nbins=[], bsize=[], m=[], s=[], ds=[])
         for _ in range(cols)
     ]
     while nbins >= MINBINS:
         buffer = get_stats(ds)
 
-        for r, m, s, d, t in zip(
-            res, buffer.m, buffer.s, buffer.ds, buffer.total
+        for r, m, s, d in zip(
+            res, buffer.m, buffer.s, buffer.ds
         ):
             r.nbins.append(nbins)
             r.bsize.append(bsize)
             r.m.append(m)
             r.s.append(s)
             r.ds.append(d)
-            r.total.append(t)
 
         nbins //= 2
         bsize *= 2

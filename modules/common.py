@@ -81,14 +81,11 @@ class Stats:
         Column SEMs.
     ds : list[float]
         Column SE(SEM)s.
-    total : list[float]
-        Column sums.
     """
 
     m: list[float]
     s: list[float]
     ds: list[float]
-    total: list[float]
 
 
 @dataclass
@@ -107,8 +104,6 @@ class BinnedStats:
         SEM per binsize.
     ds : list[float]
         SE(SEM) per binsize.
-    total : list[float]
-        Sum per binsize.
     """
 
     nbins: list[int]
@@ -116,7 +111,6 @@ class BinnedStats:
     m: list[float]
     s: list[float]
     ds: list[float]
-    total: list[float]
 
 
 def parse_ds(
@@ -197,13 +191,15 @@ def parse_ds(
 
 
 def drop_rows(
-    ds: np.array, skip_perc: int = 0, nbins: int | None = None
+    data: np.array,
+    skip_perc: int = 0,
+    nbins: int | None = None,
 ) -> np.array:
     """Remove rows from 2D array.
 
     Parameters
     -----------------------
-    ds : np.array
+    data : np.array
         The dataset to tailor.
     skip_perc : int, default = 0
         Percentage (1-100) of rows to skip.
@@ -221,7 +217,7 @@ def drop_rows(
     TailoringError
         If `nbins` set and not enough rows left.
     """
-    rows = ds.shape[0]
+    rows = data.shape[0]
 
     skip = int((skip_perc / 100.0) * rows)
     keep = rows - skip
@@ -233,15 +229,15 @@ def drop_rows(
         keep -= keep % nbins
         skip = rows - keep
 
-    return ds[skip:]
+    return data[skip:]
 
 
-def rebin(ds: np.array, nbins: int) -> np.array:
+def rebin(data: np.array, nbins: int) -> np.array:
     """Rebin a 2D array with perfect shape assumed.
 
     Parameters
     -----------------------
-    ds : np.array
+    data : np.array
         The dataset to rebin.
     nbins : int
         Number of requested bins.
@@ -258,28 +254,28 @@ def rebin(ds: np.array, nbins: int) -> np.array:
     TailoringError
         If leftover rows after binning.
     """
-    if ds.shape[0] < nbins:
+    if data.shape[0] < nbins:
         raise TailoringError("insufficient rows for binning")
 
-    if ds.shape[0] % nbins != 0:
+    if data.shape[0] % nbins != 0:
         raise TailoringError("leftover rows in binning")
 
-    size = ds.shape[0] // nbins
-    ds2 = np.ndarray((nbins, ds.shape[1]))
+    size = data.shape[0] // nbins
+    data2 = np.ndarray((nbins, data.shape[1]))
 
     for ib in range(nbins):
-        ds2[ib] = ds[(ib * size) : ((ib + 1) * size)].mean(
+        data2[ib] = data[(ib * size) : ((ib + 1) * size)].mean(
             axis=0
         )
-    return ds2
+    return data2
 
 
-def get_stats(ds: np.array) -> Stats:
+def get_stats(data: np.array) -> Stats:
     """Compute statistical observables for dataset.
 
     Parameters
     -----------------------
-    ds : np.array
+    data : np.array
         The dataset to analyze.
 
     Returns
@@ -287,13 +283,12 @@ def get_stats(ds: np.array) -> Stats:
     Stats
         Stats object with column statistical summary.
     """
-    N = ds.shape[0]
+    N = data.shape[0]
 
-    res = Stats(m=[], s=[], ds=[], total=[])
-    for col in ds.T:
+    res = Stats(m=[], s=[], ds=[])
+    for col in data.T:
         res.m.append(col.mean())
         res.s.append(col.std(ddof=1) / sqrt(N))
         res.ds.append(res.s[-1] / sqrt(2.0 * (N - 1)))
-        res.total.append(col.sum())
 
     return res

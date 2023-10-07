@@ -38,7 +38,7 @@ from modules.print import print_ave
 
 VERSION_MAJOR = 1
 VERSION_MINOR = 0
-VERSION_REVISION = 1
+VERSION_REVISION = 2
 
 
 def main():
