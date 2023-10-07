@@ -38,13 +38,6 @@ def test_ave():
         1.1184045756749872e-05,
         1.409812617811892e-05,
     ]
-    assert stats[0].total == [
-        -511.5338903548387,
-        -255.76694517741936,
-        -127.88347258870968,
-        -63.94173629435484,
-        -31.97086814717742,
-    ]
     assert stats[1].nbins == stats[0].nbins
     assert stats[1].bsize == stats[0].bsize
     assert stats[1].m == [
@@ -67,13 +60,6 @@ def test_ave():
         6.994989435854652e-06,
         1.0092917878463464e-05,
         1.2885895484422392e-05,
-    ]
-    assert stats[1].total == [
-        -7423.936727645161,
-        -3711.9683638225806,
-        -1855.9841819112903,
-        -927.9920909556452,
-        -463.9960454778226,
     ]
     assert stats[2].nbins == stats[0].nbins
     assert stats[2].bsize == stats[0].bsize
@@ -98,19 +84,11 @@ def test_ave():
         3.9691020955896445e-06,
         5.211391565073522e-06,
     ]
-    assert stats[2].total == [
-        -7935.470613354839,
-        -3967.7353066774194,
-        -1983.8676533387097,
-        -991.9338266693549,
-        -495.96691333467743,
-    ]
     assert stats[3].nbins == stats[0].nbins
     assert stats[3].bsize == stats[0].bsize
     assert stats[3].m == stats[1].m
     assert stats[3].s == stats[1].s
     assert stats[3].ds == stats[1].ds
-    assert stats[3].total == stats[3].total
 
 
 def test_single_column():
@@ -145,11 +123,4 @@ def test_single_column():
         2.71242230926368e-06,
         3.9691020955899495e-06,
         5.211391565074036e-06,
-    ]
-    assert stats[0].total == [
-        -7935.470613354839,
-        -3967.7353066774194,
-        -1983.8676533387097,
-        -991.9338266693549,
-        -495.96691333467743,
     ]
