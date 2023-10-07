@@ -81,16 +81,12 @@ def print_avs(
         table.add_column("column")
         table.add_column("mean")
         table.add_column("SEM")
-        table.add_column("SE(SEM)")
 
-        for c, m, s, ds in zip(
-            cols, stats.m, stats.s, stats.ds
-        ):
+        for c, m, s in zip(cols, stats.m, stats.s):
             table.add_row(
                 f"{c}",
                 f"{m:.11e}",
                 f"{s:.1e}",
-                f"{ds:.1e}",
             )
 
         console.print(table)
@@ -99,10 +95,8 @@ def print_avs(
             print(report)
             print()
 
-        for c, m, s, ds in zip(
-            cols, stats.m, stats.s, stats.ds
-        ):
-            print(f"{c} {m:+.11e} {s:.1e} {ds:.1e}")
+        for c, m, s in zip(cols, stats.m, stats.s):
+            print(f"{c} {m:+.11e} {s:.1e}")
 
 
 def print_ave(

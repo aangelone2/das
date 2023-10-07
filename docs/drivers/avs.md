@@ -51,9 +51,11 @@ resulting in the output
 
 ![fancy-output](avs-01.png)
 
-where the notation is the one introduced in the [statistical
-background](../statistics.md) and each row of the resulting
-table corresponds to one of the analyzed columns.
+where each row contains the statistical results for one of the
+columns of the data set, and the quantities are defined as
+discussed in the [uncorrelated
+data](../statistics.md#uncorrelated-data) section of the
+*statistical introduction*.
 
 Adding the `-b, --basic` option will result in the
 parser-friendly, unformatted output
@@ -62,7 +64,7 @@ parser-friendly, unformatted output
 $ ./das avs -b -s20 -v -f 1,2,3 tests/data/ave-01.dat.gz
 32398/40497 rows
 
-1 -4.99545687706e-01 9.1e-05 3.6e-07
-2 -7.24993409889e+00 7.8e-05 3.1e-07
-3 -7.74947978202e+00 4.3e-05 1.7e-07
+1 -4.99545687706e-01 9.1e-05
+2 -7.24993409889e+00 7.8e-05
+3 -7.74947978202e+00 4.3e-05
 ```
