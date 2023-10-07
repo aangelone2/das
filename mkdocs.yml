@@ -14,6 +14,7 @@ nav:
   - Drivers:
       - drivers/common.md
       - drivers/avs.md
+      - drivers/ave.md
   - Module reference:
       - reference/common.md
       - reference/drivers.md
