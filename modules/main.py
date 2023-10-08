@@ -28,17 +28,21 @@
 
 import sys
 
+from modules.functionals import susceptibility
+
 from modules.parser import build_parser
 from modules.common import parse_ds
 from modules.drivers import avs
 from modules.drivers import ave
+from modules.drivers import jck
 from modules.print import print_avs
 from modules.print import print_ave
+from modules.print import print_jck
 
 
 VERSION_MAJOR = 1
-VERSION_MINOR = 0
-VERSION_REVISION = 2
+VERSION_MINOR = 1
+VERSION_REVISION = 0
 
 
 def main():
@@ -61,10 +65,10 @@ def main():
         numpy_fields = args.fields
 
     # parsing (common)
-    ds = parse_ds(args.file, numpy_fields, not args.quick)
+    data = parse_ds(args.file, numpy_fields, not args.quick)
 
     if args.command == "avs":
-        stats, report = avs(ds, args.skip)
+        stats, report = avs(data, args.skip)
         print_avs(
             stats,
             report,
@@ -73,8 +77,17 @@ def main():
             basic=args.basic,
         )
     elif args.command == "ave":
-        stats, report = ave(ds, args.skip)
+        stats, report = ave(data, args.skip)
         print_ave(
+            stats,
+            report,
+            fields=args.fields,
+            verbose=args.verbose,
+            basic=args.basic,
+        )
+    elif args.command == "jck":
+        stats, report = jck(data, args.skip, susceptibility)
+        print_jck(
             stats,
             report,
             fields=args.fields,

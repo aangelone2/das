@@ -6,6 +6,8 @@ print_avs()
     Print `avs` results in formatted way.
 print_ave()
     Print `ave` results in formatted way.
+print_jck()
+    Print `jck` results in formatted way.
 """
 
 # Copyright (c) 2023 Adriano Angelone
@@ -111,7 +113,7 @@ def print_ave(
     Parameters
     -----------------------
     stats : list[BinnedStats]
-        The result from a call to ave()
+        The result from a call to ave().
     report : str
         The report string.
     fields : list[int] | None
@@ -173,3 +175,72 @@ def print_ave(
                 print(
                     f"{col} {nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}"
                 )
+
+
+def print_jck(
+    stats: BinnedStats,
+    report: str,
+    fields: list[int] | None,
+    verbose: bool,
+    basic: bool,
+) -> None:
+    """Print `jck` results in formatted way.
+
+    Parameters
+    -----------------------
+    stats : BinnedStats
+        The result from a call to jck().
+    report : str
+        The report string.
+    fields : list[int] | None
+        The analyzed columns.
+    verbose : bool
+        If `True`, prints the report information.
+    basic : bool
+        If `True`, uses parse-friendly formatting.
+    """
+    if not basic:
+        if verbose:
+            report = report + f" :: fields {fields}"
+            console.print(report)
+            console.print()
+
+        table = Table()
+        table.add_column("bins")
+        table.add_column("binsize")
+        table.add_column("mean")
+        table.add_column("SEM")
+        table.add_column("SE(SEM)")
+
+        for nb, bs, m, s, ds in zip(
+            stats.nbins,
+            stats.bsize,
+            stats.m,
+            stats.s,
+            stats.ds,
+        ):
+            table.add_row(
+                f"{nb}",
+                f"{bs}",
+                f"{m:.11e}",
+                f"{s:.1e}",
+                f"{ds:.1e}",
+            )
+
+        console.print(table)
+    else:
+        if verbose:
+            report = report + f" :: fields {fields}"
+            print(report)
+            print()
+
+        for nb, bs, m, s, ds in zip(
+            stats.nbins,
+            stats.bsize,
+            stats.m,
+            stats.s,
+            stats.ds,
+        ):
+            print(
+                f"{nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}"
+            )

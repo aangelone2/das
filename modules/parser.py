@@ -98,5 +98,10 @@ def build_parser() -> argparse.ArgumentParser:
         description="performs binsize scaling",
         parents=[parent_parser],
     )
+    _ = subp.add_parser(
+        "jck",
+        description="performs jackknife error estimation",
+        parents=[parent_parser],
+    )
 
     return parser
