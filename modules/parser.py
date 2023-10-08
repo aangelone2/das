@@ -100,7 +100,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _ = subp.add_parser(
         "jck",
-        description="performs jackknife error estimation",
+        description="performs susceptibility error estimation via jackknife",
         parents=[parent_parser],
     )
 

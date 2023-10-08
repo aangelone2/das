@@ -164,15 +164,15 @@ def jck(data: np.array, skip_perc: int, func: Callable):
     while nbins >= MINBINS:
         sums = data.sum(axis=0)
         # full value
-        val = func(sums[0] / nbins, sums[1] / nbins)
+        val = func((sums / nbins).tolist())
 
         # vector pseudo-averages
-        ps_ave_0 = (sums[0] - data[:, 0]) / (nbins - 1)
-        ps_ave_1 = (sums[1] - data[:, 1]) / (nbins - 1)
+        ps_ave = [
+            (s - col) / (nbins - 1)
+            for s, col in zip(sums, data.T)
+        ]
         # vector of pseudovalues
-        ps_val = nbins * val - (nbins - 1) * func(
-            ps_ave_0, ps_ave_1
-        )
+        ps_val = nbins * val - (nbins - 1) * func(ps_ave)
 
         # Reshaping necessary
         ps_val = ps_val.reshape((ps_val.shape[0], 1))

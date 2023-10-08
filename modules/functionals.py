@@ -2,15 +2,17 @@
 
 To be passed as a functional to `jck`, a function should have
 the following features:
-    - Be valid for either floating-point arguments or numpy
-      arrays of floating points.
+    - Receive as arguments a list of floating-point or numpy
+      arrays.
     - Be defined in terms of mean values of quantities.
+    - Check the length of the passed list, and raise a
+      TypeError in case the number of arguments is invalid.
 
 Functions
 -----------------------
 susceptibility()
-    Computes `a1 - a2^2`, where `a1` and `a2` are its
-    (mean value) arguments.
+    Computes `l[0] - l[1]^2`, where `l` is the passed argument
+    list.
 """
 
 
@@ -19,20 +21,29 @@ import numpy as np
 
 
 def susceptibility(
-    x1: Union[float, np.array], x2: Union[float, np.array]
+    args: list[Union[float, np.array]]
 ) -> Union[float, np.array]:
     """Susceptibility function for jackknife estimates.
 
-    Returns (x1 - (x2)^2).
+    Returns (args[0] - (args[1])^2).
 
     Parameters
     -----------------------
-    x1, x2 : Union[float, np.array]
-        Input data (may be single numbers or arrays)
+    args : list[Union[float, np.array]]
+        Input data (may be single numbers or arrays).
 
     Returns
     -----------------------
     Union[float, np.array]
         The computed susceptibilities.
+
+    Raises
+    -----------------------
+    TypeError
+        If invalid length of the passed list.
     """
-    return x1 - x2**2.0
+    if len(args) != 2:
+        raise TypeError(
+            "invalid number of arguments in susceptibility()"
+        )
+    return args[0] - args[1] ** 2.0

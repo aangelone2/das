@@ -1,8 +1,9 @@
 """Test module for jck() driver."""
 
 
-from modules.functionals import susceptibility
+import pytest
 
+from modules.functionals import susceptibility
 from modules.common import parse_ds
 from modules.drivers import jck
 
@@ -40,3 +41,27 @@ def test_simple():
         0.00035894882108480344,
         0.0005779335966681555,
     ]
+
+
+def test_invalid_input():
+    """Test the case of too many or too few fields."""
+
+    SKIP_PERC = 10
+
+    with pytest.raises(TypeError) as err:
+        data = parse_ds(
+            "tests/data/jck-01.dat.gz", [1, 2, 3], True
+        )
+        _ = jck(data, SKIP_PERC, susceptibility)
+    assert (
+        str(err.value)
+        == "invalid number of arguments in susceptibility()"
+    )
+
+    with pytest.raises(TypeError) as err:
+        data = parse_ds("tests/data/jck-01.dat.gz", [1], True)
+        _ = jck(data, SKIP_PERC, susceptibility)
+    assert (
+        str(err.value)
+        == "invalid number of arguments in susceptibility()"
+    )
