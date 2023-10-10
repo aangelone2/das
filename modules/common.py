@@ -214,10 +214,15 @@ def drop_rows(
 
     Raises
     -----------------------
+    ValueError
+        If `skip_perc` not in [0, 100].
     TailoringError
         If `nbins` set and not enough rows left.
     """
     rows = data.shape[0]
+
+    if not 0 <= skip_perc <= 100:
+        raise ValueError("invalid skip percentage")
 
     skip = int((skip_perc / 100.0) * rows)
     keep = rows - skip

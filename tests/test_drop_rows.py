@@ -141,3 +141,19 @@ def test_short():
         ds1 = drop_rows(ds, skip_perc=90, nbins=8)
         assert ds1.shape == (1, 1)
     assert str(err.value) == "insufficient rows left"
+
+
+def test_invalid_perc():
+    """Test passage of invalid skip percentage."""
+
+    ds = parse_ds(
+        "tests/data/dr-03-short.dat", None, colnum_test=True
+    )
+
+    with pytest.raises(ValueError) as err:
+        _ = drop_rows(ds, skip_perc=-10, nbins=8)
+    assert str(err.value) == "invalid skip percentage"
+
+    with pytest.raises(ValueError) as err:
+        _ = drop_rows(ds, skip_perc=150, nbins=8)
+    assert str(err.value) == "invalid skip percentage"

@@ -42,7 +42,7 @@ from modules.print import print_jck
 
 VERSION_MAJOR = 1
 VERSION_MINOR = 1
-VERSION_REVISION = 1
+VERSION_REVISION = 2
 
 
 def main():
