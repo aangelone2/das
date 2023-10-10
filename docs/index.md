@@ -18,9 +18,28 @@ analysis of (Monte Carlo) data.
 
 ## Current capabilities
 
+The capabilities of `das` are programmed in *drivers*,
+subcommands specialized for a specific task, and include:
+
 - Simple averaging and analysis of uncorrelated data
 - Binsize scaling to compute accurate errors for correlated
   data
+- Jackknife estimation of errors for mean value functionals
+
+A list of available drivers, together with the instructions for
+the main command, can be displayed as
+
+```
+$ ./das -h
+usage: das [-h] [--version] {avs,ave,jck} ...
+
+positional arguments:
+  {avs,ave,jck}
+
+options:
+  -h, --help     show this help message and exit
+  --version      display version number and exit
+```
 
 
 

@@ -58,8 +58,50 @@ If the plateau is reached, the obtained SEMs can be taken as
 estimates for the actual error free from correlation effects.
 
 
+## Jackknife analysis
+
+The jackknife protocol[^4] is commonly used to estimate the
+errors of complex functions of mean values, which may be
+underestimated by simply applying error propagation techniques.
+
+The prescription discussed here is used to compute the error on
+an estimator $\widehat{\theta}$ for a parameter $\theta$, based
+on the data set $[x_1, \ldots, x_n]$.
+
+To begin, one groups the data in $n_b$ bins of size $b$ each.
+This is necessary in the case of correlated data, in order to
+attempt to obtain decorrelated estimates; a scaling on the bin
+size may also be performed.
+
+In terms of the binned data, one then defines
+$\widehat{\theta}\_{-i}$ as the estimator for
+$\widehat{\theta}$ where the $i$-th bin has been neglected
+(e.g., a function of the mean of the $x_i$ computed on the
+average where one of the blocks is removed from the dataset).
+
+From this definition, one finally introduces the corresponding
+$i$-th *pseudovalue* as
+
+$$
+\widetilde{\theta}\_i = n_b \cdot \widehat{\theta} - (n_b - 1)
+\widehat{\theta}\_{-i}
+$$
+
+One can show that:
+
+- The average of the pseudovalues is an estimator for $\theta$.
+
+- The pseudovalues can be treated as a set of approximately
+  independent and identically distributed random variables.
+
+This allows to infer confidence intervals on the average of the
+pseudovalues and their SEM, which bind the original parameter
+$\theta$.
 
 
-[^1]: https://en.wikipedia.org/wiki/Standard_error
-[^2]: https://en.wikipedia.org/wiki/Standard_deviation
-[^3]: Flyvbjerg *et al.*, J. Chem. Phys. **1**, 461 (1989).
+
+
+[^1]: https://en.wikipedia.org/wiki/Standard_error.
+[^2]: https://en.wikipedia.org/wiki/Standard_deviation.
+[^3]: Flyvbjerg *et al.*, J. Chem. Phys. **1**, 461 (1989), Sec. IV.
+[^4]: Miller, Biometrika **61**, 1 (1974).
