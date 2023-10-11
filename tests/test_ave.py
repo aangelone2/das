@@ -11,8 +11,9 @@ def test_ave():
     SKIP_PERC = 20
 
     ds = parse_ds("tests/data/ave-01.dat.gz", None, True)
-    stats, report = ave(ds, SKIP_PERC)
+    stats, actimes, report = ave(ds, SKIP_PERC, False)
 
+    assert not actimes
     assert report == "31744/40497 rows"
 
     assert stats[0].nbins == [1024, 512, 256, 128, 64]
@@ -97,8 +98,9 @@ def test_single_column():
     SKIP_PERC = 20
 
     ds = parse_ds("tests/data/ave-01.dat.gz", [2], True)
-    stats, report = ave(ds, SKIP_PERC)
+    stats, actimes, report = ave(ds, SKIP_PERC, False)
 
+    assert not actimes
     assert report == "31744/40497 rows"
 
     assert stats[0].nbins == [1024, 512, 256, 128, 64]

@@ -35,14 +35,15 @@ from modules.common import parse_ds
 from modules.drivers import avs
 from modules.drivers import ave
 from modules.drivers import jck
+from modules.print import PrintConfig
 from modules.print import print_avs
 from modules.print import print_ave
 from modules.print import print_jck
 
 
 VERSION_MAJOR = 1
-VERSION_MINOR = 1
-VERSION_REVISION = 2
+VERSION_MINOR = 2
+VERSION_REVISION = 0
 
 
 def main():
@@ -66,33 +67,33 @@ def main():
 
     # parsing (common)
     data = parse_ds(args.file, numpy_fields, not args.quick)
+    print_config = PrintConfig(
+        args.fields, args.verbose, args.basic
+    )
 
     if args.command == "avs":
         stats, report = avs(data, args.skip)
         print_avs(
             stats,
             report,
-            fields=args.fields,
-            verbose=args.verbose,
-            basic=args.basic,
+            print_config,
         )
     elif args.command == "ave":
-        stats, report = ave(data, args.skip)
+        stats, actimes, report = ave(
+            data, args.skip, args.actime
+        )
         print_ave(
             stats,
+            actimes,
             report,
-            fields=args.fields,
-            verbose=args.verbose,
-            basic=args.basic,
+            print_config,
         )
     elif args.command == "jck":
         stats, report = jck(data, args.skip, susceptibility)
         print_jck(
             stats,
             report,
-            fields=args.fields,
-            verbose=args.verbose,
-            basic=args.basic,
+            print_config,
         )
 
 

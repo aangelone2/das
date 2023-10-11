@@ -4,6 +4,10 @@ Functions
 -----------------------
 print_avs()
     Print `avs` results in formatted way.
+_print_fancy_ave()
+    Low-level function, fancy printing of `ave` results.
+_print_basic_ave()
+    Low-level function, basic printing of `ave` results.
 print_ave()
     Print `ave` results in formatted way.
 print_jck()
@@ -36,6 +40,9 @@ print_jck()
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+from typing import Optional
+from dataclasses import dataclass
+
 from rich.console import Console
 from rich.table import Table
 
@@ -46,12 +53,29 @@ from modules.common import BinnedStats
 console = Console()
 
 
+@dataclass
+class PrintConfig:
+    """Common configuration for print functions.
+
+    Attributes
+    -----------------------
+    fields : Optional[list[int]]
+        The analyzed columns.
+    verbose : bool
+        If `True`, prints the report information.
+    basic : bool
+        If `True`, uses parse-friendly formatting.
+    """
+
+    fields: Optional[list[int]]
+    verbose: bool
+    basic: bool
+
+
 def print_avs(
     stats: Stats,
     report: str,
-    fields: list[int] | None,
-    verbose: bool,
-    basic: bool,
+    config: PrintConfig,
 ) -> None:
     """Print `avs` results in formatted way.
 
@@ -61,21 +85,17 @@ def print_avs(
         The first result from a call to `avs()`.
     report : str
         The report string.
-    fields : list[int] | None
-        The analyzed columns.
-    verbose : bool
-        If `True`, prints the report information.
-    basic : bool
-        If `True`, uses parse-friendly formatting.
+    config : PrintConfig
+        The printout configuration.
     """
     cols = (
         range(1, len(stats.m) + 1)
-        if fields is None
-        else fields
+        if config.fields is None
+        else config.fields
     )
 
-    if not basic:
-        if verbose:
+    if not config.basic:
+        if config.verbose:
             console.print(report)
             console.print()
 
@@ -93,7 +113,7 @@ def print_avs(
 
         console.print(table)
     else:
-        if verbose:
+        if config.verbose:
             print(report)
             print()
 
@@ -101,46 +121,64 @@ def print_avs(
             print(f"{c} {m:+.11e} {s:.1e}")
 
 
-def print_ave(
+def _print_fancy_ave(
     stats: list[BinnedStats],
+    actimes: list[float],
     report: str,
-    fields: list[int] | None,
-    verbose: bool,
-    basic: bool,
+    config: PrintConfig,
 ) -> None:
-    """Print `ave` results in formatted way.
+    """Low-level function, fancy printing of `ave` results.
 
     Parameters
     -----------------------
     stats : list[BinnedStats]
         The result from a call to ave().
+    actimes : list[float]
+        List of the autocorrelation times (empty if not computed).
     report : str
         The report string.
-    fields : list[int] | None
-        The analyzed columns.
-    verbose : bool
-        If `True`, prints the report information.
-    basic : bool
-        If `True`, uses parse-friendly formatting.
+    config : PrintConfig
+        The printout configuration.
     """
-    cols = (
-        range(1, len(stats) + 1) if fields is None else fields
-    )
+    if config.verbose:
+        console.print(report)
+        console.print()
 
-    if not basic:
-        if verbose:
-            console.print(report)
-            console.print()
+    table = Table()
+    table.add_column("col")
+    table.add_column("bins")
+    table.add_column("binsize")
+    table.add_column("mean")
+    table.add_column("SEM")
+    table.add_column("SE(SEM)")
 
-        table = Table()
-        table.add_column("col")
-        table.add_column("bins")
-        table.add_column("binsize")
-        table.add_column("mean")
-        table.add_column("SEM")
-        table.add_column("SE(SEM)")
+    if actimes:
+        table.add_column("actime")
 
-        for col, scaling in zip(cols, stats):
+        for col, scaling, t in zip(
+            config.fields, stats, actimes
+        ):
+            for irow, (nb, bs, m, s, ds) in enumerate(
+                zip(
+                    scaling.nbins,
+                    scaling.bsize,
+                    scaling.m,
+                    scaling.s,
+                    scaling.ds,
+                )
+            ):
+                table.add_row(
+                    f"{col}",
+                    f"{nb}",
+                    f"{bs}",
+                    f"{m:.11e}",
+                    f"{s:.1e}",
+                    f"{ds:.1e}",
+                    f"{t:.1e}" if irow == 0 else "",
+                )
+            table.add_section()
+    else:
+        for col, scaling in zip(config.fields, stats):
             for nb, bs, m, s, ds in zip(
                 scaling.nbins,
                 scaling.bsize,
@@ -158,13 +196,51 @@ def print_ave(
                 )
             table.add_section()
 
-        console.print(table)
-    else:
-        if verbose:
-            print(report)
-            print()
+    console.print(table)
 
-        for col, scaling in zip(cols, stats):
+
+def _print_basic_ave(
+    stats: list[BinnedStats],
+    actimes: list[float],
+    report: str,
+    config: PrintConfig,
+) -> None:
+    """Low-level function, basic printing of `ave` results.
+
+    Parameters
+    -----------------------
+    stats : list[BinnedStats]
+        The result from a call to ave().
+    actimes : list[float]
+        List of the autocorrelation times (empty if not computed).
+    report : str
+        The report string.
+    config : PrintConfig
+        The printout configuration.
+    """
+    if config.verbose:
+        print(report)
+        print()
+
+    if actimes:
+        for col, scaling, t in zip(
+            config.fields, stats, actimes
+        ):
+            for irow, (nb, bs, m, s, ds) in enumerate(
+                zip(
+                    scaling.nbins,
+                    scaling.bsize,
+                    scaling.m,
+                    scaling.s,
+                    scaling.ds,
+                )
+            ):
+                print(
+                    f"{col} {nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}",
+                    f" {t:.1e}" if irow == 0 else "",
+                )
+    else:
+        for col, scaling in zip(config.fields, stats):
             for nb, bs, m, s, ds in zip(
                 scaling.nbins,
                 scaling.bsize,
@@ -177,12 +253,42 @@ def print_ave(
                 )
 
 
+def print_ave(
+    stats: list[BinnedStats],
+    actimes: list[float],
+    report: str,
+    config: PrintConfig,
+) -> None:
+    """Print `ave` results in formatted way.
+
+    Parameters
+    -----------------------
+    stats : list[BinnedStats]
+        The result from a call to ave().
+    actimes : list[float]
+        List of the autocorrelation times (empty if not computed).
+    report : str
+        The report string.
+    config : PrintConfig
+        The printout configuration.
+    """
+    # Setting column values
+    config.fields = (
+        range(1, len(stats) + 1)
+        if config.fields is None
+        else config.fields
+    )
+
+    if not config.basic:
+        _print_fancy_ave(stats, actimes, report, config)
+    else:
+        _print_basic_ave(stats, actimes, report, config)
+
+
 def print_jck(
     stats: BinnedStats,
     report: str,
-    fields: list[int] | None,
-    verbose: bool,
-    basic: bool,
+    config: PrintConfig,
 ) -> None:
     """Print `jck` results in formatted way.
 
@@ -192,16 +298,12 @@ def print_jck(
         The result from a call to jck().
     report : str
         The report string.
-    fields : list[int] | None
-        The analyzed columns.
-    verbose : bool
-        If `True`, prints the report information.
-    basic : bool
-        If `True`, uses parse-friendly formatting.
+    config : PrintConfig
+        The printout configuration.
     """
-    if not basic:
-        if verbose:
-            report = report + f" :: fields {fields}"
+    if not config.basic:
+        if config.verbose:
+            report = report + f" :: fields {config.fields}"
             console.print(report)
             console.print()
 
@@ -229,8 +331,8 @@ def print_jck(
 
         console.print(table)
     else:
-        if verbose:
-            report = report + f" :: fields {fields}"
+        if config.verbose:
+            report = report + f" :: fields {config.fields}"
             print(report)
             print()
 

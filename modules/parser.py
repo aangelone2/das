@@ -93,11 +93,19 @@ def build_parser() -> argparse.ArgumentParser:
         description="performs averages without rebinning",
         parents=[parent_parser],
     )
-    _ = subp.add_parser(
+
+    subp_ave = subp.add_parser(
         "ave",
         description="performs binsize scaling",
         parents=[parent_parser],
     )
+    subp_ave.add_argument(
+        "-t",
+        "--actime",
+        help="computes autocorrelation time",
+        action="store_true",
+    )
+
     _ = subp.add_parser(
         "jck",
         description="performs susceptibility error estimation via jackknife",

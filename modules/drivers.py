@@ -76,8 +76,8 @@ def avs(data: np.array, skip_perc: int) -> (Stats, str):
 
 
 def ave(
-    data: np.array, skip_perc: int
-) -> (list[BinnedStats], str):
+    data: np.array, skip_perc: int, actime: bool
+) -> (list[BinnedStats], list[float], str):
     """Compute binsize scaling of averages, SEMs, and SE(SEM)s of a 2D array by columns.
 
     Parameters
@@ -86,11 +86,15 @@ def ave(
         The 2D array to analyze.
     skip_perc : int
         The percentage (1-100) of rows to skip.
+    actime : bool
+        If True, the autocorrelation time is computed.
 
     Returns
     -----------------------
-    (list[BinnedStats], str)
+    (list[BinnedStats], list[float], str)
         - List of `BinnedStats` objects, 1 per column.
+        - List of autocorrelation times, 1 per column (empty if
+          not computed)
         - String carrying additional information.
     """
     rows = data.shape[0]
@@ -98,6 +102,9 @@ def ave(
     keep = data.shape[0]
 
     report = f"{keep}/{rows} rows"
+
+    if actime:
+        unbinned = get_stats(data).s
 
     nbins = MAXBINS
     bsize = keep // nbins
@@ -125,7 +132,14 @@ def ave(
         bsize *= 2
         data = rebin(data, nbins=nbins)
 
-    return (res, report)
+    actimes = []
+    if actime:
+        for s_unb, col_res in zip(unbinned, res):
+            actimes.append(
+                ((max(col_res.s) / s_unb) ** 2) / 2.0
+            )
+
+    return (res, actimes, report)
 
 
 def jck(data: np.array, skip_perc: int, func: Callable):
