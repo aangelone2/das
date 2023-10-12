@@ -57,10 +57,25 @@ $$
 If the plateau is reached, the obtained SEMs can be taken as
 estimates for the actual error free from correlation effects.
 
+Such a binning analysis can also be used to extract the
+autocorrelation time for time-series data once error
+convergence has been reached (and therefore an estimate for the
+true SEM of the data is obtained as the binned SEM
+$\operatorname{SEM}\_B$). The integrated autocorrelation time
+then becomes[^4]
+
+$$
+\tau = \frac{1}{2} \left(
+\frac{\operatorname{SEM}\_B}{\operatorname{SEM}\_0} \right)^2,
+$$
+
+where $\operatorname{SEM}\_0$ is the standard error of the
+original, unbinned data.
+
 
 ## Jackknife analysis
 
-The jackknife protocol[^4] is commonly used to estimate the
+The jackknife protocol[^5] is commonly used to estimate the
 errors of complex functions of mean values, which may be
 underestimated by simply applying error propagation techniques.
 
@@ -104,4 +119,5 @@ $\theta$.
 [^1]: https://en.wikipedia.org/wiki/Standard_error.
 [^2]: https://en.wikipedia.org/wiki/Standard_deviation.
 [^3]: Flyvbjerg *et al.*, J. Chem. Phys. **1**, 461 (1989), Sec. IV.
-[^4]: Miller, Biometrika **61**, 1 (1974).
+[^4]: Grotendorst *et al.*, *Quantum simulations of complex many-body systems: from theory to algorithms* Winter School Lecture Notes, Rolduc Conference Centre, Kerkrade, The Netherlands (2002).
+[^5]: Miller, Biometrika **61**, 1 (1974).

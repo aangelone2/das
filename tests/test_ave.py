@@ -126,3 +126,18 @@ def test_single_column():
         3.9691020955899495e-06,
         5.211391565074036e-06,
     ]
+
+
+def test_actime():
+    """Test averaging scheme."""
+
+    SKIP_PERC = 20
+
+    ds = parse_ds("tests/data/ave-01.dat.gz", [0, 1, 2], True)
+    _, actimes, _ = ave(ds, SKIP_PERC, True)
+
+    assert actimes == [
+        1.9178561677439463,
+        2.0710621509373546,
+        1.0661529760486679,
+    ]
