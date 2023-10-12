@@ -52,6 +52,8 @@ BinnedStats
 import os
 from math import sqrt
 from dataclasses import dataclass
+from typing import List
+from typing import Optional
 
 import numpy as np
 
@@ -75,17 +77,17 @@ class Stats:
 
     Attributes
     -----------------------
-    m : list[float]
+    m : List[float]
         Column averages.
-    s : list[float]
+    s : List[float]
         Column SEMs.
-    ds : list[float]
+    ds : List[float]
         Column SE(SEM)s.
     """
 
-    m: list[float]
-    s: list[float]
-    ds: list[float]
+    m: List[float]
+    s: List[float]
+    ds: List[float]
 
 
 @dataclass
@@ -94,28 +96,28 @@ class BinnedStats:
 
     Attributes
     -----------------------
-    nbins: list[int]
+    nbins: List[int]
         List of bin numbers.
-    bsize: list[int]
+    bsize: List[int]
         List of binsizes.
-    m : list[float]
+    m : List[float]
         Average per binsize.
-    s : list[float]
+    s : List[float]
         SEM per binsize.
-    ds : list[float]
+    ds : List[float]
         SE(SEM) per binsize.
     """
 
-    nbins: list[int]
-    bsize: list[int]
-    m: list[float]
-    s: list[float]
-    ds: list[float]
+    nbins: List[int]
+    bsize: List[int]
+    m: List[float]
+    s: List[float]
+    ds: List[float]
 
 
 def parse_ds(
     file: str,
-    fields: list[int] | None = None,
+    fields: Optional[List[int]] = None,
     colnum_test: bool = False,
 ) -> np.array:
     """Parse a 2D array from a file.
@@ -127,7 +129,7 @@ def parse_ds(
     -----------------------
     file : str
         Path to the file to open for reading.
-    fields : list[int] | None, default = None
+    fields : Optional[List[int]], default = None
         List of fields to parse (0-indexed), all fields if
         `None`.
     colnum_test: bool, default = False
@@ -193,7 +195,7 @@ def parse_ds(
 def drop_rows(
     data: np.array,
     skip_perc: int = 0,
-    nbins: int | None = None,
+    nbins: Optional[int] = None,
 ) -> np.array:
     """Remove rows from 2D array.
 
@@ -203,7 +205,7 @@ def drop_rows(
         The dataset to tailor.
     skip_perc : int, default = 0
         Percentage (1-100) of rows to skip.
-    nbins : int | None, default = None
+    nbins : Optional[int], default = None
         If not `None`, will skip additional rows to allow this
         number of identical bins.
 

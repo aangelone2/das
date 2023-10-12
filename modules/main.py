@@ -29,7 +29,6 @@
 import sys
 
 from modules.functionals import susceptibility
-
 from modules.parser import build_parser
 from modules.common import parse_ds
 from modules.drivers import avs
@@ -43,7 +42,7 @@ from modules.print import print_jck
 
 VERSION_MAJOR = 1
 VERSION_MINOR = 2
-VERSION_REVISION = 0
+VERSION_REVISION = 1
 
 
 def main():

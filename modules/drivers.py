@@ -38,7 +38,10 @@ jck()
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+from typing import List
+from typing import Tuple
 from typing import Callable
+
 import numpy as np
 
 from modules.common import MAXBINS
@@ -77,7 +80,7 @@ def avs(data: np.array, skip_perc: int) -> (Stats, str):
 
 def ave(
     data: np.array, skip_perc: int, actime: bool
-) -> (list[BinnedStats], list[float], str):
+) -> Tuple[List[BinnedStats], List[float], str]:
     """Compute binsize scaling of averages, SEMs, and SE(SEM)s of a 2D array by columns.
 
     Parameters
@@ -91,7 +94,7 @@ def ave(
 
     Returns
     -----------------------
-    (list[BinnedStats], list[float], str)
+    Tuple[List[BinnedStats], List[float], str]
         - List of `BinnedStats` objects, 1 per column.
         - List of autocorrelation times, 1 per column (empty if
           not computed)
@@ -142,7 +145,9 @@ def ave(
     return (res, actimes, report)
 
 
-def jck(data: np.array, skip_perc: int, func: Callable):
+def jck(
+    data: np.array, skip_perc: int, func: Callable
+) -> Tuple[BinnedStats, str]:
     """Compute jackknife estimate for error of passed functional.
 
     See `modules.functionals` for blueprint of acceptable
@@ -159,7 +164,7 @@ def jck(data: np.array, skip_perc: int, func: Callable):
 
     Returns
     -----------------------
-    (BinnedStats, str)
+    Tuple[BinnedStats, str]
         - `BinnedStats` objects with statistical information.
         - String carrying additional information.
     """

@@ -16,12 +16,14 @@ susceptibility()
 """
 
 
+from typing import List
 from typing import Union
+
 import numpy as np
 
 
 def susceptibility(
-    args: list[Union[float, np.array]]
+    args: List[Union[float, np.array]]
 ) -> Union[float, np.array]:
     """Susceptibility function for jackknife estimates.
 
@@ -29,7 +31,7 @@ def susceptibility(
 
     Parameters
     -----------------------
-    args : list[Union[float, np.array]]
+    args : List[Union[float, np.array]]
         Input data (may be single numbers or arrays).
 
     Returns
