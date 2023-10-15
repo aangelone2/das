@@ -40,6 +40,9 @@ The `ave`-specific options among the ones above are:
 - `-t, --actime` adds a column in the result table containing
   the computed autocorrelation time for each column.
 
+    The maximum among the binned SEMs is used in the
+    autocorrelation time ratio, to obtain an upper bound.
+
 Refer to the list of [common](common.md) arguments and options
 shared by all drivers for further documentation.
 

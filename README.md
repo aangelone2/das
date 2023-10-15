@@ -21,6 +21,7 @@ analysis of (Monte Carlo) data.
 - Simple averaging and analysis of uncorrelated data
 - Binsize scaling to compute accurate errors for correlated
   data
+- Autocorrelation time calculation
 
 
 
