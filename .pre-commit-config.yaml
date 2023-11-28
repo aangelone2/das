@@ -13,13 +13,13 @@ repos:
       - id: check-added-large-files
         exclude: ^tests/data/
   - repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 23.11.0
     hooks:
       - id: black
-        args: [--line-length=63, --target-version=py312]
+        args: [--line-length=80, --target-version=py312]
         exclude: ^tests/data/
   - repo: https://github.com/pycqa/pylint
-    rev: v2.17.5
+    rev: v3.0.2
     hooks:
       - id: pylint
         args: [--rcfile=.pylintrc]

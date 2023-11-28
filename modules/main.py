@@ -51,9 +51,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print(
-            f"das {VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_REVISION}"
-        )
+        print(f"das {VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_REVISION}")
         sys.exit(0)
 
     # converting to list of integers,
@@ -66,9 +64,7 @@ def main():
 
     # parsing (common)
     data = parse_ds(args.file, numpy_fields, not args.quick)
-    print_config = PrintConfig(
-        args.fields, args.verbose, args.basic
-    )
+    print_config = PrintConfig(args.fields, args.verbose, args.basic)
 
     if args.command == "avs":
         stats, report = avs(data, args.skip)
@@ -78,9 +74,7 @@ def main():
             print_config,
         )
     elif args.command == "ave":
-        stats, actimes, report = ave(
-            data, args.skip, args.actime
-        )
+        stats, actimes, report = ave(data, args.skip, args.actime)
         print_ave(
             stats,
             actimes,

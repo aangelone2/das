@@ -19,12 +19,8 @@ def test_missing_file():
 def test_empty_lines():
     """Testing parsing of file with empty lines."""
 
-    ds = parse_ds(
-        "tests/data/pd-01-empty_lines.dat", None, True
-    )
-    assert np.array_equal(
-        ds, np.array([[1, 2, 3, 4], [5, 6, 7, 8]])
-    )
+    ds = parse_ds("tests/data/pd-01-empty_lines.dat", None, True)
+    assert np.array_equal(ds, np.array([[1, 2, 3, 4], [5, 6, 7, 8]]))
 
 
 def test_empty_column():
@@ -87,9 +83,7 @@ def test_empty_column():
         [0, 1],
         colnum_test=False,
     )
-    assert np.array_equal(
-        ds, np.array([[1, 2], [5, 6], [1, 2]])
-    )
+    assert np.array_equal(ds, np.array([[1, 2], [5, 6], [1, 2]]))
 
     # parsing columns [1,3], NOT testing colnum
     with pytest.raises(ParsingError) as err:
@@ -98,10 +92,7 @@ def test_empty_column():
             [1, 3],
             colnum_test=False,
         )
-    assert (
-        str(err.value)
-        == "invalid column index 3 at row 3 with 3 columns"
-    )
+    assert str(err.value) == "invalid column index 3 at row 3 with 3 columns"
 
 
 def test_missing_column():
@@ -114,10 +105,7 @@ def test_missing_column():
             [3, 4],
             colnum_test=True,
         )
-    assert (
-        str(err.value)
-        == "index 4 is out of bounds for axis 1 with size 4"
-    )
+    assert str(err.value) == "index 4 is out of bounds for axis 1 with size 4"
 
     # NOT testing colnum
     with pytest.raises(ParsingError) as err:
@@ -126,15 +114,10 @@ def test_missing_column():
             [3, 4],
             colnum_test=False,
         )
-    assert (
-        str(err.value)
-        == "invalid column index 4 at row 1 with 4 columns"
-    )
+    assert str(err.value) == "invalid column index 4 at row 1 with 4 columns"
 
     # proper parsing, 1 column
-    ds = parse_ds(
-        "tests/data/pd-03-complete.dat", [2], colnum_test=False
-    )
+    ds = parse_ds("tests/data/pd-03-complete.dat", [2], colnum_test=False)
     assert np.array_equal(
         ds,
         np.array(
@@ -158,9 +141,7 @@ def test_missing_column():
         [1, 2],
         colnum_test=False,
     )
-    assert np.array_equal(
-        ds, np.array([[2, 3], [6, 7], [2, 3]])
-    )
+    assert np.array_equal(ds, np.array([[2, 3], [6, 7], [2, 3]]))
 
 
 def test_single_column():
@@ -212,9 +193,7 @@ def test_single_column():
     )
 
     # filtering bigger file
-    ds = parse_ds(
-        "tests/data/pd-03-complete.dat", [1], colnum_test=True
-    )
+    ds = parse_ds("tests/data/pd-03-complete.dat", [1], colnum_test=True)
     assert np.array_equal(
         ds,
         np.array(
@@ -251,18 +230,14 @@ def test_empty():
     """Testing file with internal and final empty lines, and spurious spaces."""
 
     # with colnum_test
-    ds = parse_ds(
-        "tests/data/pd-06-empty.dat", None, colnum_test=True
-    )
+    ds = parse_ds("tests/data/pd-06-empty.dat", None, colnum_test=True)
     assert np.array_equal(
         ds,
         np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 3, 4]]),
     )
 
     # without colnum_test
-    ds = parse_ds(
-        "tests/data/pd-06-empty.dat", None, colnum_test=False
-    )
+    ds = parse_ds("tests/data/pd-06-empty.dat", None, colnum_test=False)
     assert np.array_equal(
         ds,
         np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 3, 4]]),

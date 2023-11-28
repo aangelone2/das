@@ -90,9 +90,7 @@ def print_avs(
         The printout configuration.
     """
     cols = (
-        range(1, len(stats.m) + 1)
-        if config.fields is None
-        else config.fields
+        range(1, len(stats.m) + 1) if config.fields is None else config.fields
     )
 
     if not config.basic:
@@ -156,9 +154,7 @@ def _print_fancy_ave(
     if actimes:
         table.add_column("actime")
 
-        for col, scaling, t in zip(
-            config.fields, stats, actimes
-        ):
+        for col, scaling, t in zip(config.fields, stats, actimes):
             for irow, (nb, bs, m, s, ds) in enumerate(
                 zip(
                     scaling.nbins,
@@ -224,9 +220,7 @@ def _print_basic_ave(
         print()
 
     if actimes:
-        for col, scaling, t in zip(
-            config.fields, stats, actimes
-        ):
+        for col, scaling, t in zip(config.fields, stats, actimes):
             for irow, (nb, bs, m, s, ds) in enumerate(
                 zip(
                     scaling.nbins,
@@ -249,9 +243,7 @@ def _print_basic_ave(
                 scaling.s,
                 scaling.ds,
             ):
-                print(
-                    f"{col} {nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}"
-                )
+                print(f"{col} {nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}")
 
 
 def print_ave(
@@ -275,9 +267,7 @@ def print_ave(
     """
     # Setting column values
     config.fields = (
-        range(1, len(stats) + 1)
-        if config.fields is None
-        else config.fields
+        range(1, len(stats) + 1) if config.fields is None else config.fields
     )
 
     if not config.basic:
@@ -344,6 +334,4 @@ def print_jck(
             stats.s,
             stats.ds,
         ):
-            print(
-                f"{nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}"
-            )
+            print(f"{nb:04d} {bs:04d} {m:+.11e} {s:.1e} {ds:.1e}")

@@ -49,19 +49,11 @@ def test_invalid_input():
     SKIP_PERC = 10
 
     with pytest.raises(TypeError) as err:
-        data = parse_ds(
-            "tests/data/jck-01.dat.gz", [1, 2, 3], True
-        )
+        data = parse_ds("tests/data/jck-01.dat.gz", [1, 2, 3], True)
         _ = jck(data, SKIP_PERC, susceptibility)
-    assert (
-        str(err.value)
-        == "invalid number of arguments in susceptibility()"
-    )
+    assert str(err.value) == "invalid number of arguments in susceptibility()"
 
     with pytest.raises(TypeError) as err:
         data = parse_ds("tests/data/jck-01.dat.gz", [1], True)
         _ = jck(data, SKIP_PERC, susceptibility)
-    assert (
-        str(err.value)
-        == "invalid number of arguments in susceptibility()"
-    )
+    assert str(err.value) == "invalid number of arguments in susceptibility()"

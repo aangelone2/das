@@ -45,7 +45,5 @@ def susceptibility(
         If invalid length of the passed list.
     """
     if len(args) != 2:
-        raise TypeError(
-            "invalid number of arguments in susceptibility()"
-        )
+        raise TypeError("invalid number of arguments in susceptibility()")
     return args[0] - args[1] ** 2.0

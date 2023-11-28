@@ -271,9 +271,7 @@ def rebin(data: np.array, nbins: int) -> np.array:
     data2 = np.ndarray((nbins, data.shape[1]))
 
     for ib in range(nbins):
-        data2[ib] = data[(ib * size) : ((ib + 1) * size)].mean(
-            axis=0
-        )
+        data2[ib] = data[(ib * size) : ((ib + 1) * size)].mean(axis=0)
     return data2
 
 

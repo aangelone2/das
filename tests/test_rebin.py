@@ -31,9 +31,7 @@ def test_successful():
     )
 
     ds2 = rebin(ds, nbins=2)
-    assert np.array_equal(
-        ds2, np.array([[3.25, 3.25, 3.5], [3.5, 7, 4.5]])
-    )
+    assert np.array_equal(ds2, np.array([[3.25, 3.25, 3.5], [3.5, 7, 4.5]]))
 
 
 def test_failure():
