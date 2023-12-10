@@ -40,9 +40,7 @@ from modules.print import print_ave
 from modules.print import print_jck
 
 
-VERSION_MAJOR = 1
-VERSION_MINOR = 2
-VERSION_REVISION = 1
+__version__ = "1.2.2"
 
 
 def main():
@@ -51,7 +49,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print(f"das {VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_REVISION}")
+        print(f"das v{__version__}")
         sys.exit(0)
 
     # converting to list of integers,
