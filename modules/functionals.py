@@ -2,8 +2,7 @@
 
 To be passed as a functional to `jck`, a function should have
 the following features:
-    - Receive as arguments a list of floating-point or numpy
-      arrays.
+    - Receive as arguments a list of floating-point or numpy arrays.
     - Be defined in terms of mean values of quantities.
     - Check the length of the passed list, and raise a
       TypeError in case the number of arguments is invalid.
@@ -16,27 +15,22 @@ susceptibility()
 """
 
 
-from typing import List
-from typing import Union
-
 import numpy as np
 
 
-def susceptibility(
-    args: List[Union[float, np.array]]
-) -> Union[float, np.array]:
+def susceptibility(args: list[float | np.ndarray]) -> float | np.ndarray:
     """Susceptibility function for jackknife estimates.
 
     Returns (args[0] - (args[1])^2).
 
     Parameters
     -----------------------
-    args : List[Union[float, np.array]]
+    args : list[float | np.ndarray]
         Input data (may be single numbers or arrays).
 
     Returns
     -----------------------
-    Union[float, np.array]
+    float | np.ndarray
         The computed susceptibilities.
 
     Raises

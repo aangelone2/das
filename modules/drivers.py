@@ -38,8 +38,6 @@ jck()
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from typing import List
-from typing import Tuple
 from typing import Callable
 
 import numpy as np
@@ -53,19 +51,19 @@ from modules.common import rebin
 from modules.common import get_stats
 
 
-def avs(data: np.array, skip_perc: int) -> Tuple[Stats, str]:
+def avs(data: np.ndarray, skip_perc: int) -> tuple[Stats, str]:
     """Compute simple average, SEMs, and SE(SEM)s of a 2D array by columns.
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The 2D array to analyze.
     skip_perc : int
         The percentage (1-100) of rows to skip.
 
     Returns
     -----------------------
-    Tuple[Stats, str]
+    tuple[Stats, str]
         - Stats object with column statistics.
         - String carrying additional information.
     """
@@ -79,13 +77,13 @@ def avs(data: np.array, skip_perc: int) -> Tuple[Stats, str]:
 
 
 def ave(
-    data: np.array, skip_perc: int, actime: bool
-) -> Tuple[List[BinnedStats], List[float], str]:
+    data: np.ndarray, skip_perc: int, actime: bool
+) -> tuple[list[BinnedStats], list[float], str]:
     """Compute binsize scaling of averages, SEMs, and SE(SEM)s of a 2D array.
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The 2D array to analyze.
     skip_perc : int
         The percentage (1-100) of rows to skip.
@@ -94,7 +92,7 @@ def ave(
 
     Returns
     -----------------------
-    Tuple[List[BinnedStats], List[float], str]
+    tuple[list[BinnedStats], list[float], str]
         - List of `BinnedStats` objects, 1 per column.
         - List of autocorrelation times, 1 per column (empty if not computed).
         - String carrying additional information.
@@ -140,8 +138,8 @@ def ave(
 
 
 def jck(
-    data: np.array, skip_perc: int, func: Callable
-) -> Tuple[BinnedStats, str]:
+    data: np.ndarray, skip_perc: int, func: Callable
+) -> tuple[BinnedStats, str]:
     """Compute jackknife estimate for error of passed functional.
 
     See `modules.functionals` for blueprint of acceptable
@@ -149,7 +147,7 @@ def jck(
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The 2D array to analyze.
     skip_perc : int
         The percentage (1-100) of rows to skip.
@@ -158,7 +156,7 @@ def jck(
 
     Returns
     -----------------------
-    Tuple[BinnedStats, str]
+    tuple[BinnedStats, str]
         - `BinnedStats` objects with statistical information.
         - String carrying additional information.
     """

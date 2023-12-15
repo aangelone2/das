@@ -40,7 +40,6 @@ print_jck()
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from typing import List
 from typing import Optional
 from dataclasses import dataclass
 
@@ -60,7 +59,7 @@ class PrintConfig:
 
     Attributes
     -----------------------
-    fields : Optional[List[int]]
+    fields : Optional[list[int]]
         The analyzed columns.
     verbose : bool
         If `True`, prints the report information.
@@ -68,7 +67,7 @@ class PrintConfig:
         If `True`, uses parse-friendly formatting.
     """
 
-    fields: Optional[List[int]]
+    fields: Optional[list[int]]
     verbose: bool
     basic: bool
 
@@ -121,8 +120,8 @@ def print_avs(
 
 
 def _print_fancy_ave(
-    stats: List[BinnedStats],
-    actimes: List[float],
+    stats: list[BinnedStats],
+    actimes: list[float],
     report: str,
     config: PrintConfig,
 ) -> None:
@@ -130,9 +129,9 @@ def _print_fancy_ave(
 
     Parameters
     -----------------------
-    stats : List[BinnedStats]
+    stats : list[BinnedStats]
         The result from a call to ave().
-    actimes : List[float]
+    actimes : list[float]
         List of the autocorrelation times (empty if not computed).
     report : str
         The report string.
@@ -197,8 +196,8 @@ def _print_fancy_ave(
 
 
 def _print_basic_ave(
-    stats: List[BinnedStats],
-    actimes: List[float],
+    stats: list[BinnedStats],
+    actimes: list[float],
     report: str,
     config: PrintConfig,
 ) -> None:
@@ -206,9 +205,9 @@ def _print_basic_ave(
 
     Parameters
     -----------------------
-    stats : List[BinnedStats]
+    stats : list[BinnedStats]
         The result from a call to ave().
-    actimes : List[float]
+    actimes : list[float]
         List of the autocorrelation times (empty if not computed).
     report : str
         The report string.
@@ -247,8 +246,8 @@ def _print_basic_ave(
 
 
 def print_ave(
-    stats: List[BinnedStats],
-    actimes: List[float],
+    stats: list[BinnedStats],
+    actimes: list[float],
     report: str,
     config: PrintConfig,
 ) -> None:
@@ -256,9 +255,9 @@ def print_ave(
 
     Parameters
     -----------------------
-    stats : List[BinnedStats]
+    stats : list[BinnedStats]
         The result from a call to ave().
-    actimes : List[float]
+    actimes : list[float]
         List of the autocorrelation times (empty if not computed).
     report : str
         The report string.

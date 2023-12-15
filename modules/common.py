@@ -52,7 +52,6 @@ BinnedStats
 import os
 from math import sqrt
 from dataclasses import dataclass
-from typing import List
 from typing import Optional
 
 import numpy as np
@@ -77,17 +76,17 @@ class Stats:
 
     Attributes
     -----------------------
-    m : List[float]
+    m : list[float]
         Column averages.
-    s : List[float]
+    s : list[float]
         Column SEMs.
-    ds : List[float]
+    ds : list[float]
         Column SE(SEM)s.
     """
 
-    m: List[float]
-    s: List[float]
-    ds: List[float]
+    m: list[float]
+    s: list[float]
+    ds: list[float]
 
 
 @dataclass
@@ -96,30 +95,30 @@ class BinnedStats:
 
     Attributes
     -----------------------
-    nbins: List[int]
+    nbins: list[int]
         List of bin numbers.
-    bsize: List[int]
+    bsize: list[int]
         List of binsizes.
-    m : List[float]
+    m : list[float]
         Average per binsize.
-    s : List[float]
+    s : list[float]
         SEM per binsize.
-    ds : List[float]
+    ds : list[float]
         SE(SEM) per binsize.
     """
 
-    nbins: List[int]
-    bsize: List[int]
-    m: List[float]
-    s: List[float]
-    ds: List[float]
+    nbins: list[int]
+    bsize: list[int]
+    m: list[float]
+    s: list[float]
+    ds: list[float]
 
 
 def parse_ds(
     file: str,
-    fields: Optional[List[int]] = None,
+    fields: Optional[list[int]] = None,
     colnum_test: bool = False,
-) -> np.array:
+) -> np.ndarray:
     """Parse a 2D array from a file.
 
     - Empty and commented (`#`) lines are skipped.
@@ -129,7 +128,7 @@ def parse_ds(
     -----------------------
     file : str
         Path to the file to open for reading.
-    fields : Optional[List[int]], default = None
+    fields : Optional[list[int]], default = None
         List of fields to parse (0-indexed), all fields if
         `None`.
     colnum_test: bool, default = False
@@ -138,7 +137,7 @@ def parse_ds(
 
     Returns
     -----------------------
-    np.array
+    np.ndarray
         A 2D array storing the parsed dataset.
 
     Raises
@@ -193,15 +192,15 @@ def parse_ds(
 
 
 def drop_rows(
-    data: np.array,
+    data: np.ndarray,
     skip_perc: int = 0,
     nbins: Optional[int] = None,
-) -> np.array:
+) -> np.ndarray:
     """Remove rows from 2D array.
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The dataset to tailor.
     skip_perc : int, default = 0
         Percentage (1-100) of rows to skip.
@@ -211,7 +210,7 @@ def drop_rows(
 
     Returns
     -----------------------
-    np.array
+    np.ndarray
         The tailored array.
 
     Raises
@@ -239,19 +238,19 @@ def drop_rows(
     return data[skip:]
 
 
-def rebin(data: np.array, nbins: int) -> np.array:
+def rebin(data: np.ndarray, nbins: int) -> np.ndarray:
     """Rebin a 2D array with perfect shape assumed.
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The dataset to rebin.
     nbins : int
         Number of requested bins.
 
     Returns
     -----------------------
-    np.array
+    np.ndarray
         The rebinned array.
 
     Raises
@@ -275,12 +274,12 @@ def rebin(data: np.array, nbins: int) -> np.array:
     return data2
 
 
-def get_stats(data: np.array) -> Stats:
+def get_stats(data: np.ndarray) -> Stats:
     """Compute statistical observables for dataset.
 
     Parameters
     -----------------------
-    data : np.array
+    data : np.ndarray
         The dataset to analyze.
 
     Returns
