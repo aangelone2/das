@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "das"
-version = "1.2.2"
+version = "1.2.3"
 description = ""
 authors = ["Adriano Angelone <adriano.angelone.work@gmail.com>"]
 readme = "README.md"
@@ -22,6 +22,9 @@ mkdocs = "^1.4.2"
 mkdocstrings = {extras = ["python"], version = "^0.20"}
 mkdocs-material = "^9.1.19"
 mkdocs-render-swagger-plugin = "^0.0.4"
+
+[tool.poetry.scripts]
+das = "modules.main:main"
 
 [build-system]
 requires = ["poetry-core"]

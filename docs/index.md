@@ -10,36 +10,8 @@
 [![mkdocs](https://img.shields.io/badge/documentation-mkdocs-blue)](https://github.com/mkdocs/mkdocs)
 
 
-`das` (Data Analysis Suite) is a simple Python utility for the
-analysis of (Monte Carlo) data.
-
-
-
-
-## Current capabilities
-
-The capabilities of `das` are programmed in *drivers*,
-subcommands specialized for a specific task, and include:
-
-- Simple averaging and analysis of uncorrelated data
-- Binsize scaling to compute accurate errors for correlated
-  data
-- Jackknife estimation of errors for mean value functionals
-
-A list of available drivers, together with the instructions for
-the main command, can be displayed as
-
-```
-$ ./das -h
-usage: das [-h] [--version] {avs,ave,jck} ...
-
-positional arguments:
-  {avs,ave,jck}
-
-options:
-  -h, --help     show this help message and exit
-  --version      display version number and exit
-```
+`das` (Data Analysis Suite) is a simple Python utility
+for the analysis of (Monte Carlo) data.
 
 
 
@@ -56,16 +28,41 @@ will setup a virtual environment will all required
 dependencies. The command
 
 ```
-$ poetry run python -m modules.main <arguments>
+$ poetry --directory <project directory> run das <arguments>
 ```
 
-or a call to the launch bash script
+(`--directory ...` is optional if within the project
+directory already) will execute the program.
+
+
+
+
+## Current capabilities
+
+The capabilities of `das` are programmed in *drivers*,
+subcommands specialized for a specific task, and
+include:
+
+- Simple averaging and analysis of uncorrelated data
+- Binsize scaling to compute accurate errors for
+  correlated data
+- Jackknife estimation of errors for mean value
+  functionals
+
+A list of available drivers, together with the
+instructions for the main command, can be displayed as
 
 ```
-$ ./das <arguments>
-```
+$ poetry --directory=<project directory> run das -h
+usage: das [-h] [--version] {avs,ave,jck} ...
 
-will execute the program.
+positional arguments:
+  {avs,ave,jck}
+
+options:
+  -h, --help     show this help message and exit
+  --version      display version number and exit
+```
 
 
 
@@ -85,8 +82,8 @@ or
 $ make docs
 ```
 
-generate the documentation, which can be browsed at the URL
-[http://localhost:8000](http://localhost:8000).
+generate the documentation, which can be browsed at the
+URL [http://localhost:8000](http://localhost:8000).
 
 Most of the documentation (including all the information
 related to the UI and the statistical background) can be
