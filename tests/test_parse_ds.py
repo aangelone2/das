@@ -242,3 +242,17 @@ def test_empty():
         ds,
         np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 3, 4]]),
     )
+
+
+def test_spurious_field():
+    """Testing file with spurious (non-numerical) field."""
+
+    # with colnum_test
+    with pytest.raises(ParsingError) as err:
+        _ = parse_ds("tests/data/pd-07-spurious.dat", None, colnum_test=True)
+    assert str(err.value) == "could not convert string 'ab' to float64 at row 1, column 3."
+
+    # without colnum_test
+    with pytest.raises(ParsingError) as err:
+        _ = parse_ds("tests/data/pd-07-spurious.dat", None, colnum_test=False)
+    assert str(err.value) == "could not convert string 'ab' to float64 at row 1, column 3."
