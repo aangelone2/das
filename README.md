@@ -44,10 +44,11 @@ subcommands specialized for a specific task, and
 include:
 
 - Simple averaging and analysis of uncorrelated data
+  (`avs`);
 - Binsize scaling to compute accurate errors for
-  correlated data
+  correlated data (`ave`);
 - Jackknife estimation of errors for mean value
-  functionals
+  functionals (`jck`).
 
 A list of available drivers, together with the
 instructions for the main command, can be displayed as
@@ -63,6 +64,15 @@ options:
   -h, --help     show this help message and exit
   --version      display version number and exit
 ```
+
+Each driver is invoked as
+
+```
+$ das <driver> <arguments>
+```
+
+Executing the driver with no arguments will display a
+help message.
 
 
 
