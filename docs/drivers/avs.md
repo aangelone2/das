@@ -44,7 +44,7 @@ drivers for further documentation.
 A typical call to `avs` may look like
 
 ```
-$ ./das avs -s20 -f 1,2,3 tests/data/ave-01.dat.gz
+$ ./das avs -s20 -f 1,2,3 -v tests/data/ave-01.dat.gz
 ```
 
 resulting in the output

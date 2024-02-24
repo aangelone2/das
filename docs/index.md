@@ -44,11 +44,11 @@ subcommands specialized for a specific task, and
 include:
 
 - Simple averaging and analysis of uncorrelated data
-  (`avs`);
+  ([`avs`](drivers/avs.html));
 - Binsize scaling to compute accurate errors for
-  correlated data (`ave`);
+  correlated data ([`ave`](drivers/ave.html));
 - Jackknife estimation of errors for mean value
-  functionals (`jck`).
+  functionals ([`jck`](drivers/jck.html)).
 
 A list of available drivers, together with the
 instructions for the main command, can be displayed as
