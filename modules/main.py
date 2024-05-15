@@ -40,7 +40,7 @@ from modules.print import print_ave
 from modules.print import print_jck
 
 
-__version__ = "1.2.4"
+__version__ = "1.2.5"
 
 
 def main():
